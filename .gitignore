@@ -3,3 +3,8 @@ hold
 *.o
 *.so
 *~
+
+.Rproj
+.user
+.Rbuildignore
+.Rhistory

@@ -1,0 +1,15 @@
+Package: fmlr
+Title: Financial Machine Learning using R
+Version: 0.0.0.1
+Author: Lei Hua [aut, cre],
+Maintainer: Lei Hua <larry.lei.hua@gmail.com>
+Description: This is an R package for tools of machine learning for financial data.
+Depends:
+    R (>= 3.5)
+License: file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports:
+    stats,
+    lubridate

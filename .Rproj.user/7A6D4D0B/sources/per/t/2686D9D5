@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1546886720690.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "699197559",
+    "id" : "2686D9D5",
+    "lastKnownWriteTime" : 1546896124,
+    "last_content_update" : 1546896124532,
+    "path" : "~/Dropbox/git/fmlr/R/bars.R",
+    "project_path" : "R/bars.R",
+    "properties" : {
+        "cursorPosition" : "8,60",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
