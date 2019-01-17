@@ -1,3 +1,7 @@
+#--------------------#
+# LarryHua.com, 2019 #
+#--------------------#
+
 #' Construct time bars
 #' 
 #' @param dat dat input with at least the following columns: tStamp, Price, Size

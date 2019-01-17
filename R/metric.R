@@ -1,3 +1,7 @@
+#--------------------#
+# LarryHua.com, 2019 #
+#--------------------#
+
 acc_lucky <- function(train_class, test_class, my_acc, s=1000)
 {
   acc_random_guess <- acc_educated_guess <- NULL
