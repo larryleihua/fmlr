@@ -78,7 +78,8 @@ read_algoseek_futures_fullDepth_ <- function(rawdata)
 #' zipdata <- tempfile()
 #' download.file("https://www.algoseek.com/static/files/sample_data/futures_and_future_options/ESH5.Futures.FullDepth.20150128.csv.zip",zipdata)
 #' dat <- read_algoseek_futures_fullDepth(zipdata)
-
+#' 
+#' @export
 read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
 {
   if(is.null(whichData))

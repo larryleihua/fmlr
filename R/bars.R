@@ -6,6 +6,8 @@
 #' 
 #' @param dat dat input with at least the following columns: tStamp, Price, Size
 #' @param tDur the time duration in seconds of each window
+#' 
+#' @export
 bar_time <- function(dat, tDur=1)
 {
   t0 <- lubridate::floor_date(min(dat$tStamp))
@@ -22,6 +24,8 @@ bar_time <- function(dat, tDur=1)
 #' 
 #' @param dat dat input with at least the following columns: Price, Size
 #' @param nTic the number of ticks of each window
+#' 
+#' @export
 bar_tick <- function(dat, nTic)
 {
   n <- dim(dat)[1]
@@ -38,6 +42,8 @@ bar_tick <- function(dat, nTic)
 #' 
 #' @param dat dat input with at least the following columns: Price, Size
 #' @param vol the volume of each window
+#' 
+#' @export
 bar_volume <- function(dat, vol)
 {
   cumVol <- cumsum(dat$Size)
@@ -54,6 +60,8 @@ bar_volume <- function(dat, vol)
 #' 
 #' @param dat dat input with at least the following columns: Price, Size
 #' @param unit the total dollar (unit) traded of each window
+#' 
+#' @export
 bar_unit <- function(dat, unit)
 {
   cumUnit <- cumsum(dat$Size*dat$Price)
