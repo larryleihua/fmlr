@@ -85,21 +85,21 @@ read_algoseek_futures_fullDepth_ <- function(data)
 read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
 {
   col_types <- readr::cols(
-    Timestamp = col_integer(),
-    Ticker = col_character(),
-    Side = col_character(),
-    Flags = col_integer(),
-    Depth = col_integer(),
-    Level1 = col_character(),
-    Level2 = col_character(),
-    Level3 = col_character(),
-    Level4 = col_character(),
-    Level5 = col_character(),
-    Level6 = col_character(),
-    Level7 = col_character(),
-    Level8 = col_character(),
-    Level9 = col_character(),
-    Level10 = col_character()
+    Timestamp = readr::col_integer(),
+    Ticker = readr::col_character(),
+    Side = readr::col_character(),
+    Flags = readr::col_integer(),
+    Depth = readr::col_integer(),
+    Level1 = readr::col_character(),
+    Level2 = readr::col_character(),
+    Level3 = readr::col_character(),
+    Level4 = readr::col_character(),
+    Level5 = readr::col_character(),
+    Level6 = readr::col_character(),
+    Level7 = readr::col_character(),
+    Level8 = readr::col_character(),
+    Level9 = readr::col_character(),
+    Level10 = readr::col_character()
   )
   
   if(is.null(whichData))
