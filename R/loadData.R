@@ -84,7 +84,7 @@ read_algoseek_futures_fullDepth_ <- function(data)
 #' @export
 read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
 {
-  col_types <- cols(
+  col_types <- readr::cols(
     Timestamp = col_integer(),
     Ticker = col_character(),
     Side = col_character(),
