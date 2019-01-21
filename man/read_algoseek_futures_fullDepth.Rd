@@ -19,4 +19,7 @@ zipdata <- tempfile()
 download.file("https://www.algoseek.com/static/files/sample_data/futures_and_future_options/ESH5.Futures.FullDepth.20150128.csv.zip",zipdata)
 dat <- read_algoseek_futures_fullDepth(zipdata)
 
+# Do not run unless the file 20160104.zip is avaliable
+# dat <- read_algoseek_futures_fullDepth("20160104.zip", whichData="ES/ESH6.csv")
+
 }

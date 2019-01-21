@@ -3,9 +3,8 @@
 #--------------------#
 
 # Internal function used to process data loaded by read_algoseek_futures_fullDepth()
-read_algoseek_futures_fullDepth_ <- function(rawdata)
+read_algoseek_futures_fullDepth_ <- function(data)
 {
-  data <- rawdata
   data$h <- floor(data$Timestamp / 1e7) %% 1e2
   data$m <- floor(data$Timestamp / 1e5) %% 1e2
   data$s <- floor(data$Timestamp / 1e3) %% 1e2
@@ -63,7 +62,7 @@ read_algoseek_futures_fullDepth_ <- function(rawdata)
   tmp <- stringr::str_extract_all(data$Level10, "\\([^()]+\\)")
   data$o10 <- as.numeric(substring(tmp,2,nchar(tmp)-1))
 
-  data[, c(intersect(c("Ticker","Date","Side","Flags"), names(rawdata)),
+  data[, c(intersect(c("Ticker","Date","Side","Flags"), names(data)),
           "h","m","s","ms",
           "p1","p2","p3","p4","p5","p6","p7","p8","p9","p10",
           "v1","v2","v3","v4","v5","v6","v7","v8","v9","v10",
@@ -79,17 +78,37 @@ read_algoseek_futures_fullDepth_ <- function(rawdata)
 #' download.file("https://www.algoseek.com/static/files/sample_data/futures_and_future_options/ESH5.Futures.FullDepth.20150128.csv.zip",zipdata)
 #' dat <- read_algoseek_futures_fullDepth(zipdata)
 #' 
+#' # Do not run unless the file 20160104.zip is avaliable
+#' # dat <- read_algoseek_futures_fullDepth("20160104.zip", whichData="ES/ESH6.csv")
+#' 
 #' @export
 read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
 {
+  col_types <- cols(
+    Timestamp = col_integer(),
+    Ticker = col_character(),
+    Side = col_character(),
+    Flags = col_integer(),
+    Depth = col_integer(),
+    Level1 = col_character(),
+    Level2 = col_character(),
+    Level3 = col_character(),
+    Level4 = col_character(),
+    Level5 = col_character(),
+    Level6 = col_character(),
+    Level7 = col_character(),
+    Level8 = col_character(),
+    Level9 = col_character(),
+    Level10 = col_character()
+  )
+  
   if(is.null(whichData))
   {
     file_names <- unzip(zipdata, list = TRUE)
     data_file_names <- subset(file_names, Length>0)
     output_file_names <- gsub("/", "_", data_file_names$Name)
-    
     alldata <- lapply(data_file_names$Name, function(file){
-      rawdata <- read.table(unz(zipdata, file), header=T, sep=",")
+      rawdata <- readr::read_csv(unz(zipdata, file), col_types=col_types)
       read_algoseek_futures_fullDepth_(rawdata)
     })
     names(alldata) <- output_file_names
@@ -97,10 +116,12 @@ read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
   {
     output_file_names <- gsub("/", "_", whichData)
     alldata <- lapply(whichData, function(file){
-      rawdata <- read.table(unz(zipdata, file), header=T, sep=",")
+      rawdata <- readr::read_csv(unz(zipdata, file), col_types=col_types)
       read_algoseek_futures_fullDepth_(rawdata)
     })
     names(alldata) <- output_file_names
   }
   alldata
 }
+
+
