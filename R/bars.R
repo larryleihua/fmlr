@@ -80,12 +80,33 @@ bar_unit <- function(dat, unit)
 #' @examples
 #' 
 #' set.seed(1)
-#' dat <- data.frame(Price = c(rep(0.5, 4), runif(10)))
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(2), 0.5, 0.5, runif(2) ))
 #' 
 #' b_t <- imbalance_tick(dat)
 #' 
 #' @export
 imbalance_tick <- function(dat)
+{
+  n <- length(dat$Price)
+  imbalance <- sign(diff(dat$Price))
+  imbalance[imbalance==0] <- NA
+  imbalance <- c(0, imbalance)
+  imbalance <- zoo::na.locf(imbalance)
+  imbalance
+}
+
+
+#' (Deprecated, use fmlr::imbalance_tick) The auxiliary function b_t for constructing tick imbalance bars. The first b_t is assigned the value 0 because no information is available
+#'
+#' @param dat dat input with at least the following columns: Price
+#' @examples
+#' 
+#' set.seed(1)
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(10)))
+#' 
+#' b_t <- imbalance_tick_v1(dat)
+#' 
+imbalance_tick_v1 <- function(dat)
 {
   n <- length(dat$Price)
   imbalance <- rep(0, n)
@@ -425,7 +446,7 @@ bar_tick_runs <- function(dat, w0=10, bkw_T=5, bkw_Pb1=5)
 #' @param dat dat input with at least the following columns: Price, Size
 #' @param w0 the time window length of the first bar
 #' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_Pb1: backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
+#' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
 #' 
 #' @return a vector for the lengths of the tick runs bars. For example, if the return is c(10,26), then the 2 tick runs bars are (0,10] and (10, 36]
 #' 
@@ -532,7 +553,7 @@ Tstar_vrb <- function(dat, w0=10, bkw_T=5, bkw_Pb1=5)
 #' @param dat dat input with at least the following column: Price, Size
 #' @param w0 the time window length of the first bar
 #' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_Pb1: backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
+#' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
 #' 
 #' @return a list of vectors for HLOCV of tick runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
 #'

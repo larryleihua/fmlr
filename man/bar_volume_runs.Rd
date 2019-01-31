@@ -13,7 +13,7 @@ bar_volume_runs(dat, w0 = 10, bkw_T = 5, bkw_Pb1 = 5)
 
 \item{bkw_T}{backward window length when using pracma::movavg for exponentially weighted average T}
 
-\item{bkw_Pb1:}{backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]}
+\item{bkw_Pb1}{backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]}
 }
 \value{
 a list of vectors for HLOCV of tick runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
