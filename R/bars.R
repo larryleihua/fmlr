@@ -421,7 +421,6 @@ bar_tick_runs <- function(dat, w0=10, bkw_T=5, bkw_Pb1=5)
   list(H=H,L=L,O=O,C=C,V=V)
 }
 
-
 #' Tstar index for Volume Runs Bars (bar_vrb)
 #' @param dat dat input with at least the following columns: Price, Size
 #' @param w0 the time window length of the first bar
