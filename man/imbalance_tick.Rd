@@ -15,7 +15,7 @@ The auxiliary function b_t for constructing tick imbalance bars. The first b_t i
 \examples{
 
 set.seed(1)
-dat <- data.frame(Price = c(rep(0.5, 4), runif(2), 0.5, 0.5, runif(2) ))
+dat <- data.frame(Price = c(rep(0.5, 4), runif(2), 0.5, 0.5, 0.4, runif(2) ))
 
 b_t <- imbalance_tick(dat)
 

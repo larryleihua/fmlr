@@ -80,7 +80,7 @@ bar_unit <- function(dat, unit)
 #' @examples
 #' 
 #' set.seed(1)
-#' dat <- data.frame(Price = c(rep(0.5, 4), runif(2), 0.5, 0.5, runif(2) ))
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(2), 0.5, 0.5, 0.4, runif(2) ))
 #' 
 #' b_t <- imbalance_tick(dat)
 #' 
@@ -222,6 +222,21 @@ bar_tick_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' @export
 imbalance_volume <- function(dat)
 {
+  imbalance_tick(dat)*dat$Size  ## the main difference than imbalance_tick
+}
+
+#' (Deprecated, use fmlr::imbalance_volume) The auxiliary function b_tv_t for constructing volume imbalance bars. The first b_tv_t is assigned the value 0 because no information is available
+#'
+#' @param dat dat input with at least the following columns: Price, Size
+#' @examples
+#' 
+#' set.seed(1)
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(10)), Size = rep(10,14))
+#' 
+#' b_tv_t <- imbalance_volume_v1(dat)
+#' 
+imbalance_volume_v1 <- function(dat)
+{
   n <- length(dat$Price)
   vol <- dat$Size  ## the main difference than imbalance_tick
   imbalance <- rep(0, n)
@@ -232,6 +247,7 @@ imbalance_volume <- function(dat)
   }
   imbalance
 }
+
 
 #' Tstar index for Volume Imbalance Bars (bar_vib)
 #' @param dat dat input with at least the following columns: Price, Size
