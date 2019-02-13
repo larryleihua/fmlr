@@ -87,12 +87,11 @@ bar_unit <- function(dat, unit)
 #' @export
 imbalance_tick <- function(dat)
 {
-  n <- length(dat$Price)
-  imbalance <- sign(diff(dat$Price))
-  imbalance[imbalance==0] <- NA
-  imbalance <- c(0, imbalance)
-  imbalance <- zoo::na.locf(imbalance)
-  imbalance
+  # RLE encoding the prices means we don't have to deal with 0 price diffs.
+  imbalance <- rle(dat$Price)
+  imbalance$values <- sign(c(0, diff(imbalance$values)))
+  # Invert the RLE to get the answer
+  inverse.rle(imbalance)
 }
 
 
