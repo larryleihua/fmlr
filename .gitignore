@@ -8,3 +8,5 @@ hold
 .Rproj.user
 .Rbuildignore
 .Rhistory
+
+R/.Rhistory

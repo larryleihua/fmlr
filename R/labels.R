@@ -19,7 +19,7 @@
 #'         t1: local time index when the vertical barrier is hit.
 #'         ret: return associated with the event.
 #'         tFea: ending time index of feature bars.
-#'         tLabel: ending time index of events, i.e., when the labels are created. Both tFea abd tLabel will be useful for sequential bootstrap.
+#'         tLabel: ending time index of events, i.e., when the labels are created. Both tFea and tLabel will be useful for sequential bootstrap.
 #'
 #' @export
 label_meta <- function(x, events, ptSl, ex_vert=T)
