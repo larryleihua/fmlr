@@ -2,24 +2,24 @@
 # LarryHua.com, 2019 #
 #--------------------#
 
-#' Meta labeling including three options: triple barriers, upper and vertical barriers, and lower and vertical barriers
+#' Meta labeling, including three options: triple barriers, upper and vertical barriers, and lower and vertical barriers.
 #'
-#' @param x a vector of prices series to be labeled
+#' @param x a vector of prices series to be labeled.
 #' @param events a dataframe that has the following columns:
-#'               t0: event's starting time index 
-#'               t1: event's ending time index; if t1==Inf then no vertical barrier, i.e., last observation in x is the vertical barrier
-#'               trgt: the unit absolute return used to set up the upper and lower barriers
-#'               side: 0: both upper and lower barriers; 1: only upper; -1: only lower
-#' @param ptSl a vector of two multipliers for the upper and lower barriers, respectively
-#' @param ex_vert whether exclude the output when the vertical barrier is hit; default is T
+#'               t0: event's starting time index.
+#'               t1: event's ending time index; if t1==Inf then no vertical barrier, i.e., last observation in x is the vertical barrier.
+#'               trgt: the unit absolute return used to set up the upper and lower barriers.
+#'               side: 0: both upper and lower barriers; 1: only upper; -1: only lower.
+#' @param ptSl a vector of two multipliers for the upper and lower barriers, respectively.
+#' @param ex_vert whether exclude the output when the vertical barrier is hit; default is T.
 #' 
 #' @return data frame with the following columns:
-#'         T_up: local time index when the upper barrier is hit; Inf means that upper is not hit
-#'         T_lo: local time index when the lower barrier is hit; Inf means that lower is not hit
-#'         t1: local time index when the vertical barrier is hit
-#'         ret: return associated with the event
-#'         tFea: ending time index of feature bars
-#'         tLabel: ending time index of events, i.e., when the labels are created. Both tFea abd tLabel will be useful for sequential bootstrap
+#'         T_up: local time index when the upper barrier is hit; Inf means that upper is not hit.
+#'         T_lo: local time index when the lower barrier is hit; Inf means that lower is not hit.
+#'         t1: local time index when the vertical barrier is hit.
+#'         ret: return associated with the event.
+#'         tFea: ending time index of feature bars.
+#'         tLabel: ending time index of events, i.e., when the labels are created. Both tFea abd tLabel will be useful for sequential bootstrap.
 #'
 #' @export
 label_meta <- function(x, events, ptSl, ex_vert=T)
