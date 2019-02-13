@@ -26,7 +26,7 @@ data frame with the following columns:
         t1: local time index when the vertical barrier is hit.
         ret: return associated with the event.
         tFea: ending time index of feature bars.
-        tLabel: ending time index of events, i.e., when the labels are created. Both tFea abd tLabel will be useful for sequential bootstrap.
+        tLabel: ending time index of events, i.e., when the labels are created. Both tFea and tLabel will be useful for sequential bootstrap.
 }
 \description{
 Meta labeling, including three options: triple barriers, upper and vertical barriers, and lower and vertical barriers.

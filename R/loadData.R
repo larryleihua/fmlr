@@ -74,9 +74,10 @@ read_algoseek_futures_fullDepth_ <- function(data)
 #' @param zipdata the original zip data provided by AlgoSeek
 #' @param whichData the specific data to be loaded; by default load all data in the zip file
 #' @examples
-#' zipdata <- tempfile()
-#' download.file("https://www.algoseek.com/static/files/sample_data/futures_and_future_options/ESH5.Futures.FullDepth.20150128.csv.zip",zipdata)
-#' dat <- read_algoseek_futures_fullDepth(zipdata)
+#' # zipdata <- tempfile()
+#' # download.file("https://www.algoseek.com/static/files/sample_data/
+#' # futures_and_future_options/ESH5.Futures.FullDepth.20150128.csv.zip",zipdata)
+#' # dat <- read_algoseek_futures_fullDepth(zipdata)
 #' 
 #' # Do not run unless the file 20160104.zip is avaliable
 #' # dat <- read_algoseek_futures_fullDepth("20160104.zip", whichData="ES/ESH6.csv")
@@ -104,8 +105,8 @@ read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
   
   if(is.null(whichData))
   {
-    file_names <- unzip(zipdata, list = TRUE)
-    data_file_names <- subset(file_names, Length>0)
+    file_names <- utils::unzip(zipdata, list = TRUE)
+    data_file_names <- subset(file_names, file_names$Length>0)
     output_file_names <- gsub("/", "_", data_file_names$Name)
     alldata <- lapply(data_file_names$Name, function(file){
       rawdata <- readr::read_csv(unz(zipdata, file), col_types=col_types)

@@ -32,6 +32,8 @@ label_meta <- function(x, events, ptSl, ex_vert=T)
   u <- ptSl[1]
   l <- ptSl[2]
   
+  T_up <- T_lo <- NULL
+  
   out <- sapply(1:length(t0), 
                 function(i)
                 {

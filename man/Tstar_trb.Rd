@@ -13,7 +13,7 @@ Tstar_trb(dat, w0 = 10, bkw_T = 5, bkw_Pb1 = 5)
 
 \item{bkw_T}{backward window length when using pracma::movavg for exponentially weighted average T}
 
-\item{bkw_b}{backward window length when using pracma::movavg for exponentially weighted average b_t}
+\item{bkw_Pb1}{backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]}
 }
 \value{
 a vector for the lengths of the tick imbalance bars. For example, if the return is c(10,26), then the 2 tick imbalance bars are (0,10] and (10, 36]

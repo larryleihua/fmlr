@@ -7,6 +7,7 @@
 #' @param train_class a vector for the distribution of classes in the training set
 #' @param test_class a vector for the distribution of classes in the test set
 #' @param my_acc a number between 0 and 1 for the classification accuracy to be evaluated
+#' @param s sample size of simulations used to check p-values
 #' 
 #' @examples 
 #' train_class <- c(1223,1322,1144)

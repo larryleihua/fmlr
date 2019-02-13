@@ -10,3 +10,7 @@ hold
 .Rhistory
 
 R/.Rhistory
+
+src/*.o
+src/*.so
+

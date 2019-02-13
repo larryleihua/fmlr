@@ -12,6 +12,8 @@ acc_lucky(train_class, test_class, my_acc, s = 1000)
 \item{test_class}{a vector for the distribution of classes in the test set}
 
 \item{my_acc}{a number between 0 and 1 for the classification accuracy to be evaluated}
+
+\item{s}{sample size of simulations used to check p-values}
 }
 \description{
 A function to check whether a classification is better than a guess
