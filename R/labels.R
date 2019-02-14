@@ -12,6 +12,7 @@
 #'               side: 0: both upper and lower barriers; 1: only upper; -1: only lower.
 #' @param ptSl a vector of two multipliers for the upper and lower barriers, respectively.
 #' @param ex_vert whether exclude the output when the vertical barrier is hit; default is T.
+#' @param n_ex number of excluded observations at the begining of x; default is 0.
 #' 
 #' @return data frame with the following columns:
 #'         T_up: local time index when the upper barrier is hit; Inf means that upper is not hit.
@@ -19,11 +20,12 @@
 #'         t1: local time index when the vertical barrier is hit.
 #'         ret: return associated with the event.
 #'         label: low:-1, vertical:0, upper:1.
-#'         tFea: ending time index of feature bars.
+#'         t0Fea: begining time index of feature bars.
+#'         t1Fea: ending time index of feature bars.
 #'         tLabel: ending time index of events, i.e., when the labels are created. Both tFea and tLabel will be useful for sequential bootstrap.
 #'
 #' @export
-label_meta <- function(x, events, ptSl, ex_vert=T)
+label_meta <- function(x, events, ptSl, ex_vert=T, n_ex=0)
 {
   nBar <- length(x)
   t0 <- events$t0
@@ -76,7 +78,8 @@ label_meta <- function(x, events, ptSl, ex_vert=T)
   out <- data.frame(t(out))
   names(out) <- c("T_up", "T_lo", "t1", "ret", "label")
   
-  out$tFea <- t0 - 1
+  out$t0Fea <- c(n_ex+1, t0[-length(t0)]-1)
+  out$t1Fea <- t0 - 1
   out$tLabel <- t0 - 1 + apply(out[,c("T_up", "T_lo", "t1")], 1, min)
 
   if(ex_vert==T)
