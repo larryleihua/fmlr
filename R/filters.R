@@ -16,7 +16,9 @@ istar_CUSUM_R <- function(x, h)
   S_pos <- S_neg <- 0
   istar <- NULL
   
-  for(i in 1:(nx-1))
+  # -2: because istar_CUSUM cannot be the last time index
+  # otherwise there is no bar afterwards for labeling
+  for(i in 1:(nx-2))
   {
     S_pos <- max(0, S_pos + xminusEx[i])
     S_neg <- min(0, S_neg + xminusEx[i])
