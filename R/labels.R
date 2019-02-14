@@ -18,6 +18,7 @@
 #'         T_lo: local time index when the lower barrier is hit; Inf means that lower is not hit.
 #'         t1: local time index when the vertical barrier is hit.
 #'         ret: return associated with the event.
+#'         label: low:-1, vertical:0, upper:1.
 #'         tFea: ending time index of feature bars.
 #'         tLabel: ending time index of events, i.e., when the labels are created. Both tFea and tLabel will be useful for sequential bootstrap.
 #'
@@ -32,7 +33,7 @@ label_meta <- function(x, events, ptSl, ex_vert=T)
   u <- ptSl[1]
   l <- ptSl[2]
   
-  T_up <- T_lo <- NULL
+  T_up <- T_lo <- label <- NULL
   
   out <- sapply(1:length(t0), 
                 function(i)
@@ -40,6 +41,7 @@ label_meta <- function(x, events, ptSl, ex_vert=T)
                   i_t0 <- t0[i]
                   i_t1 <- min(t1[i], length(x))
                   i_x <- x[i_t0:i_t1]
+                  i_nx <- length(i_x)
                   i_trgt <- trgt[i]
                   i_side <- side[i]
                   if(i_side==0)
@@ -64,14 +66,15 @@ label_meta <- function(x, events, ptSl, ex_vert=T)
                     T_lo <- ifelse(sum(islo)>0, min(which(islo)), Inf)
                   }
                   
-                  ret <- i_x[min(T_up, T_lo, length(i_x))] / i_x[1] - 1  
+                  ret <- i_x[min(T_up, T_lo, i_nx)] / i_x[1] - 1
+                  label <- which.min(c(T_lo, i_nx, T_up)) - 2 # low:-1, vertical:0, upper:1 
 
-                  rst <- c(T_up, T_lo, length(i_x), ret)
+                  rst <- c(T_up, T_lo, length(i_x), ret, label)
                   return(rst)
                 }
   )
   out <- data.frame(t(out))
-  names(out) <- c("T_up", "T_lo", "t1", "ret")
+  names(out) <- c("T_up", "T_lo", "t1", "ret", "label")
   
   out$tFea <- t0 - 1
   out$tLabel <- t0 - 1 + apply(out[,c("T_up", "T_lo", "t1")], 1, min)
