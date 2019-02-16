@@ -24,7 +24,7 @@ Construct tick runs bars
 \examples{
 
 set.seed(1)
-dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = rep(10,54))
-bar_tick_runs(dat)
+dat <- data.frame(Price = c(rep(0.5, 4), runif(1000)), Size = rep(10,1004))
+microbenchmark(x1 <- bar_tick_runs(dat))
 
 }

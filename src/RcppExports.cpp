@@ -5,6 +5,49 @@
 
 using namespace Rcpp;
 
+// ema
+double ema(NumericVector x, int n);
+RcppExport SEXP _fmlr_ema(SEXP xSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(ema(x, n));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Tstar_trb_cpp
+List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1);
+RcppExport SEXP _fmlr_Tstar_trb_cpp(SEXP b_tSEXP, SEXP w0SEXP, SEXP bkw_TSEXP, SEXP bkw_Pb1SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type b_t(b_tSEXP);
+    Rcpp::traits::input_parameter< int >::type w0(w0SEXP);
+    Rcpp::traits::input_parameter< int >::type bkw_T(bkw_TSEXP);
+    Rcpp::traits::input_parameter< int >::type bkw_Pb1(bkw_Pb1SEXP);
+    rcpp_result_gen = Rcpp::wrap(Tstar_trb_cpp(b_t, w0, bkw_T, bkw_Pb1));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Tstar_vrb_cpp
+List Tstar_vrb_cpp(IntegerVector b_t, NumericVector v_t, double v_0, int w0, int bkw_T, int bkw_Pb1, int bkw_V);
+RcppExport SEXP _fmlr_Tstar_vrb_cpp(SEXP b_tSEXP, SEXP v_tSEXP, SEXP v_0SEXP, SEXP w0SEXP, SEXP bkw_TSEXP, SEXP bkw_Pb1SEXP, SEXP bkw_VSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type b_t(b_tSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type v_t(v_tSEXP);
+    Rcpp::traits::input_parameter< double >::type v_0(v_0SEXP);
+    Rcpp::traits::input_parameter< int >::type w0(w0SEXP);
+    Rcpp::traits::input_parameter< int >::type bkw_T(bkw_TSEXP);
+    Rcpp::traits::input_parameter< int >::type bkw_Pb1(bkw_Pb1SEXP);
+    Rcpp::traits::input_parameter< int >::type bkw_V(bkw_VSEXP);
+    rcpp_result_gen = Rcpp::wrap(Tstar_vrb_cpp(b_t, v_t, v_0, w0, bkw_T, bkw_Pb1, bkw_V));
+    return rcpp_result_gen;
+END_RCPP
+}
 // istar_CUSUM
 IntegerVector istar_CUSUM(NumericVector x, double h);
 RcppExport SEXP _fmlr_istar_CUSUM(SEXP xSEXP, SEXP hSEXP) {
@@ -19,6 +62,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_fmlr_ema", (DL_FUNC) &_fmlr_ema, 2},
+    {"_fmlr_Tstar_trb_cpp", (DL_FUNC) &_fmlr_Tstar_trb_cpp, 4},
+    {"_fmlr_Tstar_vrb_cpp", (DL_FUNC) &_fmlr_Tstar_vrb_cpp, 7},
     {"_fmlr_istar_CUSUM", (DL_FUNC) &_fmlr_istar_CUSUM, 2},
     {NULL, NULL, 0}
 };

@@ -4,19 +4,24 @@
 \alias{bar_volume_runs}
 \title{Construct volume runs bars}
 \usage{
-bar_volume_runs(dat, w0 = 10, bkw_T = 5, bkw_Pb1 = 5)
+bar_volume_runs(dat, v_0 = 20, w0 = 10, bkw_T = 5, bkw_Pb1 = 5,
+  bkw_V = 5)
 }
 \arguments{
 \item{dat}{dat input with at least the following column: Price, Size}
+
+\item{v_0}{average volume for each trade, and it is used to create the first bar}
 
 \item{w0}{the time window length of the first bar}
 
 \item{bkw_T}{backward window length when using pracma::movavg for exponentially weighted average T}
 
 \item{bkw_Pb1}{backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]}
+
+\item{bkw_V}{backward window length for exponentially weighted average volumes}
 }
 \value{
-a list of vectors for HLOCV of tick runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
+a list of vectors for HLOCV of volume runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
 }
 \description{
 Construct volume runs bars
