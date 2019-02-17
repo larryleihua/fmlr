@@ -4,20 +4,25 @@
 
 #' Construct time bars
 #' 
-#' @param dat dat input with at least the following columns: tStamp, Price, Size
+#' @param dat dat input with at least the following columns: tStamp, Price, Size, where tStamp should be sorted already
 #' @param tDur the time duration in seconds of each window
+#' 
+#' @return seconds since the starting time point, and H,L,O,C,V
 #' 
 #' @export
 bar_time <- function(dat, tDur=1)
 {
-  t0 <- lubridate::floor_date(min(dat$tStamp))
+  idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time"))
+  if(length(idx_time)>1) stop("More than one column with timestamp!")
+  names(dat)[idx_time] <- "tStamp"
+  t0 <- lubridate::floor_date(dat$tStamp[1])
   winIdx <- as.factor(floor((dat$tStamp - t0) / tDur))
   H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
   L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
   O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
   C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
   V <- stats::aggregate(as.double(dat$Size), by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  list(sec=(as.integer(levels(winIdx))+1)*tDur,H=H,L=L,O=O,C=C,V=V)
 }
 
 #' Construct tick bars
@@ -359,5 +364,41 @@ bar_volume_runs <- function(dat, v_0=20, w0=10, bkw_T=5, bkw_Pb1=5, bkw_V=5)
   list(H=H,L=L,O=O,C=C,V=V)
 }
 
+#' Construct unit runs bars
+#' 
+#' @param dat dat input with at least the following column: Price, Size
+#' @param u_0 average unit (volume*price) for each trade, and it is used to create the first bar
+#' @param w0 the time window length of the first bar
+#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
+#' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
+#' @param bkw_U backward window length for exponentially weighted average volumes
+#' 
+#' @return a list of vectors for HLOCV of volume runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
+#'
+#' @examples
+#' 
+#' set.seed(1)
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = floor(runif(54)*100))
+#' bar_unit_runs(dat, u_0=mean(dat$Price)*mean(dat$Size))
+#' 
+#' @export
+bar_unit_runs <- function(dat, u_0=2000, w0=10, bkw_T=5, bkw_Pb1=5, bkw_U=5)
+{
+  b_t <- imbalance_tick(dat)
+  v_t <- dat$Size
+  p_t <- dat$Price
+  T_urb <- Tstar_vrb_cpp(b_t, v_t*p_t, u_0, w0, bkw_T, bkw_Pb1, bkw_U)$Tstar
+  T_urb <- c(T_urb, nrow(dat)-sum(T_urb)) # the remaining data is treated as a bar
+  
+  winEnd <- cumsum(T_urb)
+  winIdx <- as.factor(unlist(sapply(1:length(winEnd), function(i){rep(winEnd[i], T_urb[i])})))
+  
+  H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
+  L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
+  O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
+  C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
+  V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
+  list(H=H,L=L,O=O,C=C,V=V)
+}
 
 

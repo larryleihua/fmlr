@@ -2,6 +2,7 @@
 using namespace Rcpp;
 using namespace std;
 
+//' @export
 // [[Rcpp::export]]
 double ema(NumericVector x, int n) {
   const int nx = x.size();
