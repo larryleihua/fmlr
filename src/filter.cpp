@@ -4,12 +4,12 @@ using namespace Rcpp;
 //' time index that triggers a symmetric CUSUM filter
 //'
 //' @param x a vector of time series to be filtered
-//' @param h a positive number for the thresholds
+//' @param h a vector of the thresholds
 //'
 //' @examples
 //' set.seed(1)
 //' x <- runif(100, 1, 3)
-//' h <- 1.5
+//' h <- rep(1.5, 100)
 //' i_CUSUM <- istar_CUSUM(x,h)
 //' plot(x)
 //' abline(v=i_CUSUM, lty = 2)
@@ -17,7 +17,7 @@ using namespace Rcpp;
 //' ## Comparing C and R versions
 //' set.seed(1)
 //' x <- runif(1000000, 1, 3)
-//' h <- 1.5
+//' h <- rep(1.5, 100)
 //'
 //' start_time <- Sys.time()
 //' i_CUSUM <- istar_CUSUM(x,h)
@@ -32,7 +32,7 @@ using namespace Rcpp;
 //' all(i_CUSUM-i_CUSUM_R==0)
 //' @export
 // [[Rcpp::export]]
-IntegerVector istar_CUSUM(NumericVector x, double h){
+IntegerVector istar_CUSUM(NumericVector x, NumericVector h){
     const int nx = x.size();
     NumericVector xminusEx = diff(x);
     double S_pos = 0.0;
@@ -45,7 +45,7 @@ IntegerVector istar_CUSUM(NumericVector x, double h){
     {
       S_pos = std::max(0.0, S_pos + xminusEx[i]);
       S_neg = std::min(0.0, S_neg + xminusEx[i]);
-      if(std::max(S_pos, -S_neg) >= h)
+      if(std::max(S_pos, -S_neg) >= h[i])
       {
         istar.push_back(i+2);
         S_pos = 0.0;

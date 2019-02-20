@@ -49,13 +49,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // istar_CUSUM
-IntegerVector istar_CUSUM(NumericVector x, double h);
+IntegerVector istar_CUSUM(NumericVector x, NumericVector h);
 RcppExport SEXP _fmlr_istar_CUSUM(SEXP xSEXP, SEXP hSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type h(hSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type h(hSEXP);
     rcpp_result_gen = Rcpp::wrap(istar_CUSUM(x, h));
     return rcpp_result_gen;
 END_RCPP

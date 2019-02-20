@@ -66,12 +66,12 @@ Tstar_vrb_cpp <- function(b_t, v_t, v_0, w0, bkw_T, bkw_Pb1, bkw_V) {
 #' time index that triggers a symmetric CUSUM filter
 #'
 #' @param x a vector of time series to be filtered
-#' @param h a positive number for the thresholds
+#' @param h a vector of the thresholds
 #'
 #' @examples
 #' set.seed(1)
 #' x <- runif(100, 1, 3)
-#' h <- 1.5
+#' h <- rep(1.5, 100)
 #' i_CUSUM <- istar_CUSUM(x,h)
 #' plot(x)
 #' abline(v=i_CUSUM, lty = 2)
@@ -79,7 +79,7 @@ Tstar_vrb_cpp <- function(b_t, v_t, v_0, w0, bkw_T, bkw_Pb1, bkw_V) {
 #' ## Comparing C and R versions
 #' set.seed(1)
 #' x <- runif(1000000, 1, 3)
-#' h <- 1.5
+#' h <- rep(1.5, 100)
 #'
 #' start_time <- Sys.time()
 #' i_CUSUM <- istar_CUSUM(x,h)

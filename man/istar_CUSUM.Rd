@@ -9,7 +9,7 @@ istar_CUSUM(x, h)
 \arguments{
 \item{x}{a vector of time series to be filtered}
 
-\item{h}{a positive number for the thresholds}
+\item{h}{a vector of the thresholds}
 }
 \description{
 time index that triggers a symmetric CUSUM filter
@@ -17,7 +17,7 @@ time index that triggers a symmetric CUSUM filter
 \examples{
 set.seed(1)
 x <- runif(100, 1, 3)
-h <- 1.5
+h <- rep(1.5, 100)
 i_CUSUM <- istar_CUSUM(x,h)
 plot(x)
 abline(v=i_CUSUM, lty = 2)
@@ -25,7 +25,7 @@ abline(v=i_CUSUM, lty = 2)
 ## Comparing C and R versions
 set.seed(1)
 x <- runif(1000000, 1, 3)
-h <- 1.5
+h <- rep(1.5, 100)
 
 start_time <- Sys.time()
 i_CUSUM <- istar_CUSUM(x,h)
