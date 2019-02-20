@@ -7,9 +7,12 @@
 bar_time(dat, tDur = 1)
 }
 \arguments{
-\item{dat}{dat input with at least the following columns: tStamp, Price, Size}
+\item{dat}{dat input with at least the following columns: tStamp, Price, Size, where tStamp should be sorted already}
 
 \item{tDur}{the time duration in seconds of each window}
+}
+\value{
+seconds since the starting time point, and H,L,O,C,V
 }
 \description{
 Construct time bars

@@ -8,6 +8,7 @@ hold
 .Rproj.user
 .Rbuildignore
 .Rhistory
+.Rd2pdf*
 
 R/.Rhistory
 

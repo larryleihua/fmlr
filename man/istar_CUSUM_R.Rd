@@ -9,7 +9,7 @@ istar_CUSUM_R(x, h)
 \arguments{
 \item{x}{a vector of time series to be filtered}
 
-\item{h}{a positive number for the thresholds}
+\item{h}{a vector of the thresholds}
 }
 \description{
 time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM())
