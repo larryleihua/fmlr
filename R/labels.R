@@ -25,7 +25,7 @@
 #'         \item label: low:-1, vertical:0, upper:1.
 #'         \item t0Fea: begining time index of feature bars.
 #'         \item t1Fea: ending time index of feature bars.
-#'         \item tLabel: ending time index of events, i.e., when the labels are created. Both tFea and tLabel will be useful for sequential bootstrap.
+#'         \item tLabel: ending time index of events, i.e., when the labels are created. Both t1Fea and tLabel will be useful for sequential bootstrap.
 #'         }
 #'
 #' @export
