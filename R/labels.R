@@ -6,23 +6,27 @@
 #'
 #' @param x a vector of prices series to be labeled.
 #' @param events a dataframe that has the following columns:
-#'               t0: event's starting time index.
-#'               t1: event's ending time index; if t1==Inf then no vertical barrier, i.e., last observation in x is the vertical barrier.
-#'               trgt: the unit absolute return used to set up the upper and lower barriers.
-#'               side: 0: both upper and lower barriers; 1: only upper; -1: only lower.
+#' \itemize{
+#'          \item t0: event's starting time index.
+#'          \item t1: event's ending time index; if t1==Inf then no vertical barrier, i.e., last observation in x is the vertical barrier.
+#'          \item trgt: the unit absolute return used to set up the upper and lower barriers.
+#'          \item side: 0: both upper and lower barriers; 1: only upper; -1: only lower.
+#'         }
 #' @param ptSl a vector of two multipliers for the upper and lower barriers, respectively.
 #' @param ex_vert whether exclude the output when the vertical barrier is hit; default is T.
 #' @param n_ex number of excluded observations at the begining of x; default is 0.
 #' 
 #' @return data frame with the following columns:
-#'         T_up: local time index when the upper barrier is hit; Inf means that upper is not hit.
-#'         T_lo: local time index when the lower barrier is hit; Inf means that lower is not hit.
-#'         t1: local time index when the vertical barrier is hit.
-#'         ret: return associated with the event.
-#'         label: low:-1, vertical:0, upper:1.
-#'         t0Fea: begining time index of feature bars.
-#'         t1Fea: ending time index of feature bars.
-#'         tLabel: ending time index of events, i.e., when the labels are created. Both tFea and tLabel will be useful for sequential bootstrap.
+#' \itemize{
+#'         \item T_up: local time index when the upper barrier is hit; Inf means that upper is not hit.
+#'         \item T_lo: local time index when the lower barrier is hit; Inf means that lower is not hit.
+#'         \item t1: local time index when the vertical barrier is hit.
+#'         \item ret: return associated with the event.
+#'         \item label: low:-1, vertical:0, upper:1.
+#'         \item t0Fea: begining time index of feature bars.
+#'         \item t1Fea: ending time index of feature bars.
+#'         \item tLabel: ending time index of events, i.e., when the labels are created. Both tFea and tLabel will be useful for sequential bootstrap.
+#'         }
 #'
 #' @export
 label_meta <- function(x, events, ptSl, ex_vert=T, n_ex=0)
@@ -69,7 +73,8 @@ label_meta <- function(x, events, ptSl, ex_vert=T, n_ex=0)
                   }
                   
                   ret <- i_x[min(T_up, T_lo, i_nx)] / i_x[1] - 1
-                  label <- which.min(c(T_lo, i_nx, T_up)) - 2 # low:-1, vertical:0, upper:1 
+                  label <- which.min(c(T_lo, i_nx+1e-6, T_up)) - 2 # low:-1, vertical:0, upper:1
+                                                                   # +1e-6 to avoid when i_nx==T_up, the label is 0 instead of the correct 1
 
                   rst <- c(T_up, T_lo, length(i_x), ret, label)
                   return(rst)
