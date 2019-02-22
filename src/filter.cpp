@@ -38,10 +38,17 @@ IntegerVector istar_CUSUM(NumericVector x, NumericVector h){
     double S_pos = 0.0;
     double S_neg = 0.0;
     IntegerVector istar;
+    int i;
+    
+    if(h.size() == 1){
+      for( i=0; i<nx-1; ++i){
+        h.push_back(h[0]);
+      }
+    }
 
     // -2: because istar_CUSUM cannot be the last time index
     // otherwise there is no bar afterwards for labeling
-    for( int i=0; i < nx-2; ++i )
+    for( i=0; i < nx-2; ++i )
     {
       S_pos = std::max(0.0, S_pos + xminusEx[i]);
       S_neg = std::min(0.0, S_neg + xminusEx[i]);
