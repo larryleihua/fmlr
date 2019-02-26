@@ -10,8 +10,13 @@
 #' @param gam gamma for embargo
 #' @return a list of k data.frame, each containing a test set and a training set
 #' @examples
-#' feaMat <- data.frame(Y=c(1,1,0,1,0), V=c(2,4,2,4,1), t1Fea=c(2,5,8,14,20), tLabel=c(4,12,16,23,38))
+#' feaMat <- data.frame(Y = c(1,1,0,1,0),
+#'                      V = c(2,4,2,4,1), 
+#'                      t1Fea = c(2,5,8,14,20), 
+#'                      tLabel = c(4,12,16,23,38))
 #' purged_k_CV(feaMat, k=2, gam=0.1)
+#' 
+#' @export
 purged_k_CV <- function(feaMat,k=5,gam=0.01)
 {
   I <- nrow(feaMat)
