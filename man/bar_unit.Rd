@@ -7,9 +7,12 @@
 bar_unit(dat, unit)
 }
 \arguments{
-\item{dat}{dat input with at least the following columns: Price, Size}
+\item{dat}{dat input with at least the following columns: Price, Size. If timestamp is provided than output also contains timestamp of the unit bars}
 
 \item{unit}{the total dollar (unit) traded of each window}
+}
+\value{
+time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
 }
 \description{
 Construct unit bars

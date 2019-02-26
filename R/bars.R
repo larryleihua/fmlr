@@ -7,12 +7,12 @@
 #' @param dat dat input with at least the following columns: tStamp, Price, Size, where tStamp should be sorted already
 #' @param tDur the time duration in seconds of each window
 #' 
-#' @return seconds since the starting time point, and H,L,O,C,V
+#' @return tStamp, seconds since the starting time point, and H,L,O,C,V
 #' 
 #' @export
 bar_time <- function(dat, tDur=1)
 {
-  idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time"))
+  idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
   if(length(idx_time)>1) stop("More than one column with timestamp!")
   names(dat)[idx_time] <- "tStamp"
   t0 <- lubridate::floor_date(dat$tStamp[1])
@@ -22,7 +22,8 @@ bar_time <- function(dat, tDur=1)
   O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
   C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
   V <- stats::aggregate(as.double(dat$Size), by = list(winIdx), sum)$x
-  list(sec=(as.integer(levels(winIdx))+1)*tDur,H=H,L=L,O=O,C=C,V=V)
+  tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+  list(tStamp=tStamp,sec=(as.integer(levels(winIdx))+1)*tDur,H=H,L=L,O=O,C=C,V=V)
 }
 
 #' Construct tick bars
@@ -63,8 +64,10 @@ bar_volume <- function(dat, vol)
 
 #' Construct unit bars
 #' 
-#' @param dat dat input with at least the following columns: Price, Size
+#' @param dat dat input with at least the following columns: Price, Size. If timestamp is provided than output also contains timestamp of the unit bars
 #' @param unit the total dollar (unit) traded of each window
+#' 
+#' @return time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
 #' 
 #' @export
 bar_unit <- function(dat, unit)
@@ -76,7 +79,16 @@ bar_unit <- function(dat, unit)
   O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
   C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
   V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+  {
+    idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+    names(dat)[idx_time] <- "tStamp"
+    tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+    out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+  }else{
+    out <- list(H=H,L=L,O=O,C=C,V=V)
+  }
+  out
 }
 
 #' The auxiliary function b_t for constructing tick imbalance bars. The first b_t is assigned the value 0 because no information is available
