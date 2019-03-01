@@ -1,3 +1,7 @@
+//--------------------//
+// LarryHua.com, 2019 //
+//--------------------//
+
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -11,25 +15,24 @@ using namespace Rcpp;
 //' x <- runif(100, 1, 3)
 //' h <- rep(1.5, 100)
 //' i_CUSUM <- istar_CUSUM(x,h)
-//' plot(x)
 //' abline(v=i_CUSUM, lty = 2)
 //'
 //' ## Comparing C and R versions
-//' set.seed(1)
-//' x <- runif(1000000, 1, 3)
-//' h <- rep(1.5, 100)
+//' # set.seed(1)
+//' # x <- runif(1000000, 1, 3)
+//' # h <- rep(1.5, 100)
 //'
-//' start_time <- Sys.time()
-//' i_CUSUM <- istar_CUSUM(x,h)
-//' end_time <- Sys.time()
-//' C_time <- end_time - start_time
+//' # start_time <- Sys.time()
+//' # i_CUSUM <- istar_CUSUM(x,h)
+//' # end_time <- Sys.time()
+//' # C_time <- end_time - start_time
 //'
-//' start_time <- Sys.time()
-//' i_CUSUM_R <- istar_CUSUM_R(x,h)
-//' end_time <- Sys.time()
-//' R_time <- end_time - start_time
-//' cat("C and R time: ", C_time, R_time)
-//' all(i_CUSUM-i_CUSUM_R==0)
+//' # start_time <- Sys.time()
+//' # i_CUSUM_R <- istar_CUSUM_R(x,h)
+//' # end_time <- Sys.time()
+//' # R_time <- end_time - start_time
+//' # cat("C and R time: ", C_time, R_time)
+//' # all(i_CUSUM-i_CUSUM_R==0)
 //' @export
 // [[Rcpp::export]]
 IntegerVector istar_CUSUM(NumericVector x, NumericVector h){

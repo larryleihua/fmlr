@@ -4,7 +4,7 @@
 \alias{Tstar_vrb_cpp}
 \title{Tstar index for Volume Runs Bars (bar_vrb)}
 \usage{
-Tstar_vrb_cpp(b_t, v_t, v_0, w0, bkw_T, bkw_Pb1, bkw_V)
+Tstar_vrb_cpp(b_t, v_t, v_0, w0, de, bkw_T, bkw_Pb1, bkw_V)
 }
 \arguments{
 \item{b_t}{output of imbalance_tick(dat) with the data 'dat' has at least the following columns: Price}
@@ -14,6 +14,8 @@ Tstar_vrb_cpp(b_t, v_t, v_0, w0, bkw_T, bkw_Pb1, bkw_V)
 \item{v_0}{average volume for each trade, and it is used to create the first bar}
 
 \item{w0}{the time window length of the first bar}
+
+\item{de}{a positive value for adjusting the expected window size, that is, de*E0T; default: 1.}
 
 \item{bkw_T}{backward window length for exponentially weighted average T}
 
@@ -35,7 +37,7 @@ set.seed(1)
 dat <- data.frame(Price = c(rep(0.5, 5), runif(100)), Size = runif(105, 10, 100))
 b_t <- imbalance_tick(dat)
 v_t <- dat$Size
-T_vrb <- Tstar_vrb_cpp(b_t, v_t, 55, 10, 10, 10, 10)
+T_vrb <- Tstar_vrb_cpp(b_t, v_t, 55, 10, 1.0, 10, 10, 10)
 col <- ifelse(T_vrb$Type==1, "red", "blue")
 T <- cumsum(T_vrb$Tstar)
 plot(dat$Price)

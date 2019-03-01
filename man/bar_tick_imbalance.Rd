@@ -16,7 +16,7 @@ bar_tick_imbalance(dat, w0 = 10, bkw_T = 5, bkw_b = 5)
 \item{bkw_b}{backward window length when using pracma::movavg for exponentially weighted average b_t}
 }
 \value{
-a list of vectors for HLOCV of tick imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
+a list of vectors for tStamp (if returned), and HLOCV of tick imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
 }
 \description{
 Construct tick imbalance bars

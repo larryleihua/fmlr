@@ -2,7 +2,7 @@
 % Please edit documentation in R/filters.R
 \name{istar_CUSUM_R}
 \alias{istar_CUSUM_R}
-\title{time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM())}
+\title{time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM(), for shorter x, the R version can be faster than the C version)}
 \usage{
 istar_CUSUM_R(x, h)
 }
@@ -12,5 +12,5 @@ istar_CUSUM_R(x, h)
 \item{h}{a vector of the thresholds}
 }
 \description{
-time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM())
+time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM(), for shorter x, the R version can be faster than the C version)
 }

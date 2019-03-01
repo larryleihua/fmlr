@@ -4,12 +4,14 @@
 \alias{Tstar_trb_cpp}
 \title{Tstar index for Tick Runs Bars (bar_trb)}
 \usage{
-Tstar_trb_cpp(b_t, w0, bkw_T, bkw_Pb1)
+Tstar_trb_cpp(b_t, w0, de, bkw_T, bkw_Pb1)
 }
 \arguments{
 \item{b_t}{output of imbalance_tick(dat) with the dat has at least the following columns: Price}
 
 \item{w0}{the time window length of the first bar}
+
+\item{de}{a positive value for adjusting the expected window size, that is, de*E0}
 
 \item{bkw_T}{backward window length for exponentially weighted average T}
 
@@ -28,7 +30,7 @@ Tstar index for Tick Runs Bars (bar_trb)
 set.seed(1)
 dat <- data.frame(Price = c(rep(0.5, 5), runif(100)))
 b_t <- imbalance_tick(dat)
-T_trb <- Tstar_trb_cpp(b_t, 10, 10, 10)
+T_trb <- Tstar_trb_cpp(b_t, 10, 1.0, 10, 10)
 col <- ifelse(T_trb$Type==1, "red", "blue")
 T <- cumsum(T_trb$Tstar)
 plot(dat$Price)

@@ -11,6 +11,9 @@ bar_volume(dat, vol)
 
 \item{vol}{the volume of each window}
 }
+\value{
+time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
+}
 \description{
 Construct volume bars
 }

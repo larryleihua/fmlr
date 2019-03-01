@@ -1,7 +1,17 @@
+//--------------------//
+// LarryHua.com, 2019 //
+//--------------------//
+
 #include <Rcpp.h>
 using namespace Rcpp;
 using namespace std;
 
+//' exponentially weighted moving average; only return the last value
+//' @param x a numeric vector
+//' @param n window size
+//' 
+//' @return a numeric value
+//' 
 //' @export
 // [[Rcpp::export]]
 double ema(NumericVector x, int n) {
@@ -18,6 +28,7 @@ double ema(NumericVector x, int n) {
 //' Tstar index for Tick Runs Bars (bar_trb)
 //' @param b_t output of imbalance_tick(dat) with the dat has at least the following columns: Price
 //' @param w0 the time window length of the first bar
+//' @param de a positive value for adjusting the expected window size, that is, de*E0
 //' @param bkw_T backward window length for exponentially weighted average T
 //' @param bkw_Pb1 backward window length for exponentially weighted average P[b_t=1]
 //' 
@@ -30,7 +41,7 @@ double ema(NumericVector x, int n) {
 //' set.seed(1)
 //' dat <- data.frame(Price = c(rep(0.5, 5), runif(100)))
 //' b_t <- imbalance_tick(dat)
-//' T_trb <- Tstar_trb_cpp(b_t, 10, 10, 10)
+//' T_trb <- Tstar_trb_cpp(b_t, 10, 1.0, 10, 10)
 //' col <- ifelse(T_trb$Type==1, "red", "blue")
 //' T <- cumsum(T_trb$Tstar)
 //' plot(dat$Price)
@@ -38,7 +49,7 @@ double ema(NumericVector x, int n) {
 //'  
 //' @export
 // [[Rcpp::export]]
-List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1)
+List Tstar_trb_cpp(IntegerVector b_t, int w0, double de, int bkw_T, int bkw_Pb1)
 {
   const int nb = b_t.size();
   int i, sum_pos, sum_neg, T_new, T_last=0;
@@ -80,7 +91,7 @@ List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1)
         E0T = ema(as<NumericVector>(Tvec), bkw_T);
         Pb1 = ema(Pb1vec, bkw_Pb1);
         T_last += T_new;
-        th_T_Expected = E0T*max(Pb1, 1-Pb1);
+        th_T_Expected = de*E0T*max(Pb1, 1-Pb1);
         break;
         
       } else if(sum_neg >= th_T_Expected) {
@@ -94,7 +105,7 @@ List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1)
         E0T = ema(as<NumericVector>(Tvec), bkw_T);
         Pb1 = ema(Pb1vec, bkw_Pb1);
         T_last += T_new;
-        th_T_Expected = E0T*max(Pb1, 1-Pb1);
+        th_T_Expected = de*E0T*max(Pb1, 1-Pb1);
         break;
       }
     }
@@ -108,6 +119,7 @@ List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1)
 //' @param v_t volume of the same data
 //' @param v_0 average volume for each trade, and it is used to create the first bar
 //' @param w0 the time window length of the first bar
+//' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1.
 //' @param bkw_T backward window length for exponentially weighted average T
 //' @param bkw_Pb1 backward window length for exponentially weighted average P[b_t=1]
 //' @param bkw_V backward window length for exponentially weighted average volumes
@@ -122,7 +134,7 @@ List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1)
 //' dat <- data.frame(Price = c(rep(0.5, 5), runif(100)), Size = runif(105, 10, 100))
 //' b_t <- imbalance_tick(dat)
 //' v_t <- dat$Size
-//' T_vrb <- Tstar_vrb_cpp(b_t, v_t, 55, 10, 10, 10, 10)
+//' T_vrb <- Tstar_vrb_cpp(b_t, v_t, 55, 10, 1.0, 10, 10, 10)
 //' col <- ifelse(T_vrb$Type==1, "red", "blue")
 //' T <- cumsum(T_vrb$Tstar)
 //' plot(dat$Price)
@@ -131,7 +143,7 @@ List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1)
 //' @export
 //' 
 // [[Rcpp::export]]
-List Tstar_vrb_cpp(IntegerVector b_t, NumericVector v_t, double v_0, int w0, int bkw_T, int bkw_Pb1, int bkw_V)
+List Tstar_vrb_cpp(IntegerVector b_t, NumericVector v_t, double v_0, int w0, double de, int bkw_T, int bkw_Pb1, int bkw_V)
 {
   const int nb = b_t.size();
   int i, sum_pos, sum_neg, T_new, T_last=0;
@@ -200,7 +212,7 @@ List Tstar_vrb_cpp(IntegerVector b_t, NumericVector v_t, double v_0, int w0, int
         Pb1 = ema(Pb1vec, bkw_Pb1);
 
         T_last += T_new;
-        th_T_Expected = E0T*max(Pb1*E0V_pos, (1-Pb1)*E0V_neg);
+        th_T_Expected = de*E0T*max(Pb1*E0V_pos, (1-Pb1)*E0V_neg);
         break;
         
       } else if(sum_v_neg >= th_T_Expected) {
@@ -230,7 +242,7 @@ List Tstar_vrb_cpp(IntegerVector b_t, NumericVector v_t, double v_0, int w0, int
         Pb1 = ema(Pb1vec, bkw_Pb1);
         
         T_last += T_new;
-        th_T_Expected = E0T*max(Pb1*E0V_pos, (1-Pb1)*E0V_neg);
+        th_T_Expected = de*E0T*max(Pb1*E0V_pos, (1-Pb1)*E0V_neg);
         break;
       }
     }

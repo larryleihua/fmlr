@@ -2,7 +2,7 @@
 # LarryHua.com, 2019 #
 #--------------------#
 
-#' time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM())
+#' time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM(), for shorter x, the R version can be faster than the C version)
 #' 
 #' @param x a vector of time series to be filtered
 #' @param h a vector of the thresholds

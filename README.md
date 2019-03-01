@@ -2,4 +2,4 @@
 Financial Machine Learning with R
 
 # Install
-devtools::install_github("larryleihua/fmlr")
+devtools::install_github("larryleihua/fmlr", force=T)

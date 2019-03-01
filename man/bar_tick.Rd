@@ -11,6 +11,9 @@ bar_tick(dat, nTic)
 
 \item{nTic}{the number of ticks of each window}
 }
+\value{
+time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
+}
 \description{
 Construct tick bars
 }

@@ -31,7 +31,9 @@ bar_time <- function(dat, tDur=1)
 #' @param dat dat input with at least the following columns: Price, Size
 #' @param nTic the number of ticks of each window
 #' 
-#' @export
+#' @return time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
+#' 
+#' @export 
 bar_tick <- function(dat, nTic)
 {
   n <- dim(dat)[1]
@@ -41,13 +43,25 @@ bar_tick <- function(dat, nTic)
   O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
   C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
   V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  
+  if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+  {
+    idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+    names(dat)[idx_time] <- "tStamp"
+    tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+    out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+  }else{
+    out <- list(H=H,L=L,O=O,C=C,V=V)
+  }
+  out
 }
 
 #' Construct volume bars
 #' 
 #' @param dat dat input with at least the following columns: Price, Size
 #' @param vol the volume of each window
+#' 
+#' @return time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
 #' 
 #' @export
 bar_volume <- function(dat, vol)
@@ -59,7 +73,17 @@ bar_volume <- function(dat, vol)
   O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
   C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
   V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  
+  if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+  {
+    idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+    names(dat)[idx_time] <- "tStamp"
+    tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+    out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+  }else{
+    out <- list(H=H,L=L,O=O,C=C,V=V)
+  }
+  out
 }
 
 #' Construct unit bars
@@ -176,7 +200,7 @@ Tstar_tib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
 #' @param bkw_b backward window length when using pracma::movavg for exponentially weighted average b_t
 #' 
-#' @return a list of vectors for HLOCV of tick imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
+#' @return a list of vectors for tStamp (if returned), and HLOCV of tick imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
 #'
 #' @examples
 #' 
@@ -198,7 +222,17 @@ bar_tick_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
   O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
   C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
   V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  
+  if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+  {
+    idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+    names(dat)[idx_time] <- "tStamp"
+    tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+    out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+  }else{
+    out <- list(H=H,L=L,O=O,C=C,V=V)
+  }
+  out
 }
 
 
@@ -282,7 +316,7 @@ Tstar_vib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
 #' @param bkw_b backward window length when using pracma::movavg for exponentially weighted average b_tv_t
 #' 
-#' @return a list of vectors for HLOCV of volume imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
+#' @return a list of vectors for tStamp (if returned), and HLOCV of volume imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
 #'
 #' @examples
 #' 
@@ -304,40 +338,68 @@ bar_volume_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
   O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
   C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
   V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  
+  if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+  {
+    idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+    names(dat)[idx_time] <- "tStamp"
+    tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+    out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+  }else{
+    out <- list(H=H,L=L,O=O,C=C,V=V)
+  }
+  out
 }
 
 #' Construct tick runs bars
 #' 
 #' @param dat dat input with at least the following column: Price, Size
 #' @param w0 the time window length of the first bar
+#' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1
 #' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
 #' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
+#' @param filter whether used as a filter; default FALSE. If TRUE, then only i_feabar, the ending time index of feature bars, is returned
 #' 
-#' @return a list of vectors for HLOCV of tick runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
+#' @return If filter==FALSE, a list of vectors for tStamp (if returned), and HLOCV of tick runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.  If filter==TRUE, i_feabar a vector of integers for the time index.
 #'
 #' @examples
 #' 
 #' set.seed(1)
 #' dat <- data.frame(Price = c(rep(0.5, 4), runif(1000)), Size = rep(10,1004))
-#' microbenchmark(x1 <- bar_tick_runs(dat))
+#' x1 <- bar_tick_runs(dat)
+#' x2 <- bar_tick_runs(dat, filter=TRUE)
 #' 
 #' @export
-bar_tick_runs <- function(dat, w0=10, bkw_T=5, bkw_Pb1=5)
+bar_tick_runs <- function(dat, w0=10, de=1, bkw_T=5, bkw_Pb1=5, filter=FALSE)
 {
   b_t <- imbalance_tick(dat)
-  T_trb <- Tstar_trb_cpp(b_t, w0=w0, bkw_T=bkw_T, bkw_Pb1=bkw_Pb1)$Tstar
-  T_trb <- c(T_trb, nrow(dat)-sum(T_trb)) # the remaining data is treated as a bar
+  T_trb <- Tstar_trb_cpp(b_t, w0=w0, de=de, bkw_T=bkw_T, bkw_Pb1=bkw_Pb1)$Tstar
   
-  winEnd <- cumsum(T_trb)
-  winIdx <- as.factor(unlist(sapply(1:length(winEnd), function(i){rep(winEnd[i], T_trb[i])})))
-  
-  H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
-  L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
-  O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
-  C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
-  V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  if(filter==TRUE){
+    out <- cumsum(T_trb)
+  }else{
+    T_trb <- c(T_trb, nrow(dat)-sum(T_trb)) # the remaining data is treated as a bar
+    
+    winEnd <- cumsum(T_trb)
+    winIdx <- as.factor(unlist(sapply(1:length(winEnd), function(i){rep(winEnd[i], T_trb[i])})))
+    
+    H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
+    L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
+    O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
+    C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
+    V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
+    
+    if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+    {
+      idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+      names(dat)[idx_time] <- "tStamp"
+      tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+      out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+    }else{
+      out <- list(H=H,L=L,O=O,C=C,V=V)
+    }
+  }
+  out
 }
 
 #' Construct volume runs bars
@@ -345,35 +407,52 @@ bar_tick_runs <- function(dat, w0=10, bkw_T=5, bkw_Pb1=5)
 #' @param dat dat input with at least the following column: Price, Size
 #' @param v_0 average volume for each trade, and it is used to create the first bar
 #' @param w0 the time window length of the first bar
+#' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1
 #' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
 #' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
 #' @param bkw_V backward window length for exponentially weighted average volumes
+#' @param filter whether used as a filter; default FALSE. If TRUE, then only i_feabar, the ending time index of feature bars, is returned
 #' 
-#' @return a list of vectors for HLOCV of volume runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
+#' @return If filter==FALSE, a list of vectors for tStamp (if returned), and HLOCV of volume runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.  If filter==TRUE, i_feabar a vector of integers for the time index.
 #'
 #' @examples
 #' 
 #' set.seed(1)
 #' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = floor(runif(54)*100))
 #' bar_volume_runs(dat)
+#' bar_volume_runs(dat, filter=TRUE)
 #' 
 #' @export
-bar_volume_runs <- function(dat, v_0=20, w0=10, bkw_T=5, bkw_Pb1=5, bkw_V=5)
+bar_volume_runs <- function(dat, v_0=20, w0=10, de=1, bkw_T=5, bkw_Pb1=5, bkw_V=5, filter=FALSE)
 {
   b_t <- imbalance_tick(dat)
   v_t <- dat$Size
-  T_vrb <- Tstar_vrb_cpp(b_t, v_t, v_0, w0, bkw_T, bkw_Pb1, bkw_V)$Tstar
-  T_vrb <- c(T_vrb, nrow(dat)-sum(T_vrb)) # the remaining data is treated as a bar
+  T_vrb <- Tstar_vrb_cpp(b_t, v_t, v_0, w0, de, bkw_T, bkw_Pb1, bkw_V)$Tstar
   
-  winEnd <- cumsum(T_vrb)
-  winIdx <- as.factor(unlist(sapply(1:length(winEnd), function(i){rep(winEnd[i], T_vrb[i])})))
-  
-  H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
-  L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
-  O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
-  C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
-  V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  if(filter==TRUE){
+    out <- cumsum(T_vrb)
+  }else{
+    T_vrb <- c(T_vrb, nrow(dat)-sum(T_vrb)) # the remaining data is treated as a bar  
+    winEnd <- cumsum(T_vrb)
+    winIdx <- as.factor(unlist(sapply(1:length(winEnd), function(i){rep(winEnd[i], T_vrb[i])})))
+    
+    H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
+    L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
+    O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
+    C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
+    V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
+    
+    if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+    {
+      idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+      names(dat)[idx_time] <- "tStamp"
+      tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+      out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+    }else{
+      out <- list(H=H,L=L,O=O,C=C,V=V)
+    }
+  }
+  out
 }
 
 #' Construct unit runs bars
@@ -381,36 +460,51 @@ bar_volume_runs <- function(dat, v_0=20, w0=10, bkw_T=5, bkw_Pb1=5, bkw_V=5)
 #' @param dat dat input with at least the following column: Price, Size
 #' @param u_0 average unit (volume*price) for each trade, and it is used to create the first bar
 #' @param w0 the time window length of the first bar
+#' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1
 #' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
 #' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
 #' @param bkw_U backward window length for exponentially weighted average volumes
+#' @param filter whether used as a filter; default FALSE. If TRUE, then only i_feabar, the ending time index of feature bars, is returned
 #' 
-#' @return a list of vectors for HLOCV of volume runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.
+#' @return If filter==FALSE, a list of vectors for tStamp (if returned), and HLOCV of volume runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar. If filter==TRUE, i_feabar a vector of integers for the time index.
 #'
 #' @examples
 #' 
 #' set.seed(1)
 #' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = floor(runif(54)*100))
 #' bar_unit_runs(dat, u_0=mean(dat$Price)*mean(dat$Size))
+#' bar_unit_runs(dat, u_0=mean(dat$Price)*mean(dat$Size), filter=TRUE)
 #' 
 #' @export
-bar_unit_runs <- function(dat, u_0=2000, w0=10, bkw_T=5, bkw_Pb1=5, bkw_U=5)
+bar_unit_runs <- function(dat, u_0=2000, w0=10, de=1, bkw_T=5, bkw_Pb1=5, bkw_U=5, filter=FALSE)
 {
   b_t <- imbalance_tick(dat)
   v_t <- dat$Size
   p_t <- dat$Price
-  T_urb <- Tstar_vrb_cpp(b_t, v_t*p_t, u_0, w0, bkw_T, bkw_Pb1, bkw_U)$Tstar
-  T_urb <- c(T_urb, nrow(dat)-sum(T_urb)) # the remaining data is treated as a bar
+  T_urb <- Tstar_vrb_cpp(b_t, v_t*p_t, u_0, w0, de, bkw_T, bkw_Pb1, bkw_U)$Tstar
   
-  winEnd <- cumsum(T_urb)
-  winIdx <- as.factor(unlist(sapply(1:length(winEnd), function(i){rep(winEnd[i], T_urb[i])})))
-  
-  H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
-  L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
-  O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
-  C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
-  V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
-  list(H=H,L=L,O=O,C=C,V=V)
+  if(filter==TRUE){
+    out <- cumsum(T_urb)
+  }else{
+    T_urb <- c(T_urb, nrow(dat)-sum(T_urb)) # the remaining data is treated as a bar
+    winEnd <- cumsum(T_urb)
+    winIdx <- as.factor(unlist(sapply(1:length(winEnd), function(i){rep(winEnd[i], T_urb[i])})))
+    
+    H <- stats::aggregate(dat$Price, by = list(winIdx), max)$x
+    L <- stats::aggregate(dat$Price, by = list(winIdx), min)$x
+    O <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[1]})$x
+    C <- stats::aggregate(dat$Price, by = list(winIdx), function(x){x[length(x)]})$x
+    V <- stats::aggregate(dat$Size, by = list(winIdx), sum)$x
+    
+    if(any(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t")))
+    {
+      idx_time <- which(names(dat) %in% c("tStamp", "Timestamp", "timestamp", "time", "t"))
+      names(dat)[idx_time] <- "tStamp"
+      tStamp <- stats::aggregate(dat$tStamp, by = list(winIdx), function(x){x[length(x)]})$x
+      out <- list(tStamp=tStamp,H=H,L=L,O=O,C=C,V=V)
+    }else{
+      out <- list(H=H,L=L,O=O,C=C,V=V)
+    }
+  }
+  out
 }
-
-

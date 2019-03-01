@@ -18,22 +18,23 @@ BEGIN_RCPP
 END_RCPP
 }
 // Tstar_trb_cpp
-List Tstar_trb_cpp(IntegerVector b_t, int w0, int bkw_T, int bkw_Pb1);
-RcppExport SEXP _fmlr_Tstar_trb_cpp(SEXP b_tSEXP, SEXP w0SEXP, SEXP bkw_TSEXP, SEXP bkw_Pb1SEXP) {
+List Tstar_trb_cpp(IntegerVector b_t, int w0, double de, int bkw_T, int bkw_Pb1);
+RcppExport SEXP _fmlr_Tstar_trb_cpp(SEXP b_tSEXP, SEXP w0SEXP, SEXP deSEXP, SEXP bkw_TSEXP, SEXP bkw_Pb1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type b_t(b_tSEXP);
     Rcpp::traits::input_parameter< int >::type w0(w0SEXP);
+    Rcpp::traits::input_parameter< double >::type de(deSEXP);
     Rcpp::traits::input_parameter< int >::type bkw_T(bkw_TSEXP);
     Rcpp::traits::input_parameter< int >::type bkw_Pb1(bkw_Pb1SEXP);
-    rcpp_result_gen = Rcpp::wrap(Tstar_trb_cpp(b_t, w0, bkw_T, bkw_Pb1));
+    rcpp_result_gen = Rcpp::wrap(Tstar_trb_cpp(b_t, w0, de, bkw_T, bkw_Pb1));
     return rcpp_result_gen;
 END_RCPP
 }
 // Tstar_vrb_cpp
-List Tstar_vrb_cpp(IntegerVector b_t, NumericVector v_t, double v_0, int w0, int bkw_T, int bkw_Pb1, int bkw_V);
-RcppExport SEXP _fmlr_Tstar_vrb_cpp(SEXP b_tSEXP, SEXP v_tSEXP, SEXP v_0SEXP, SEXP w0SEXP, SEXP bkw_TSEXP, SEXP bkw_Pb1SEXP, SEXP bkw_VSEXP) {
+List Tstar_vrb_cpp(IntegerVector b_t, NumericVector v_t, double v_0, int w0, double de, int bkw_T, int bkw_Pb1, int bkw_V);
+RcppExport SEXP _fmlr_Tstar_vrb_cpp(SEXP b_tSEXP, SEXP v_tSEXP, SEXP v_0SEXP, SEXP w0SEXP, SEXP deSEXP, SEXP bkw_TSEXP, SEXP bkw_Pb1SEXP, SEXP bkw_VSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -41,10 +42,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type v_t(v_tSEXP);
     Rcpp::traits::input_parameter< double >::type v_0(v_0SEXP);
     Rcpp::traits::input_parameter< int >::type w0(w0SEXP);
+    Rcpp::traits::input_parameter< double >::type de(deSEXP);
     Rcpp::traits::input_parameter< int >::type bkw_T(bkw_TSEXP);
     Rcpp::traits::input_parameter< int >::type bkw_Pb1(bkw_Pb1SEXP);
     Rcpp::traits::input_parameter< int >::type bkw_V(bkw_VSEXP);
-    rcpp_result_gen = Rcpp::wrap(Tstar_vrb_cpp(b_t, v_t, v_0, w0, bkw_T, bkw_Pb1, bkw_V));
+    rcpp_result_gen = Rcpp::wrap(Tstar_vrb_cpp(b_t, v_t, v_0, w0, de, bkw_T, bkw_Pb1, bkw_V));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -63,8 +65,8 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_fmlr_ema", (DL_FUNC) &_fmlr_ema, 2},
-    {"_fmlr_Tstar_trb_cpp", (DL_FUNC) &_fmlr_Tstar_trb_cpp, 4},
-    {"_fmlr_Tstar_vrb_cpp", (DL_FUNC) &_fmlr_Tstar_vrb_cpp, 7},
+    {"_fmlr_Tstar_trb_cpp", (DL_FUNC) &_fmlr_Tstar_trb_cpp, 5},
+    {"_fmlr_Tstar_vrb_cpp", (DL_FUNC) &_fmlr_Tstar_vrb_cpp, 8},
     {"_fmlr_istar_CUSUM", (DL_FUNC) &_fmlr_istar_CUSUM, 2},
     {NULL, NULL, 0}
 };
