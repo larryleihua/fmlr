@@ -10,6 +10,8 @@
 #'
 #' @examples
 #' weights_fracDiff(0.5,tau=1e-3)
+#' 
+#' @author Larry Lei Hua
 #'
 #' @export
 weights_fracDiff <- function(d=0.5, nWei=10, tau=NULL)
@@ -46,6 +48,8 @@ weights_fracDiff <- function(d=0.5, nWei=10, tau=NULL)
 #' @param nWei number of weights for output
 #' @param tau threshold where weights are cut off; default is NULL, if not NULL
 #'            then use tau and nWei is not used
+#'            
+#' @author Larry Lei Hua
 #'
 #' @export 
 fracDiff <- function(x, d=0.5, nWei=10, tau=NULL)

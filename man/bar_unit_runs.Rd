@@ -38,3 +38,6 @@ bar_unit_runs(dat, u_0=mean(dat$Price)*mean(dat$Size))
 bar_unit_runs(dat, u_0=mean(dat$Price)*mean(dat$Size), filter=TRUE)
 
 }
+\author{
+Larry Lei Hua
+}

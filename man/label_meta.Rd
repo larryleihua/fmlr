@@ -39,3 +39,6 @@ data frame with the following columns:
 \description{
 Meta labeling, including three options: triple barriers, upper and vertical barriers, and lower and vertical barriers.
 }
+\author{
+Larry Lei Hua
+}

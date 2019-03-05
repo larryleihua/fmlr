@@ -12,6 +12,8 @@ using namespace std;
 //' 
 //' @return a numeric value
 //' 
+//' @author Larry Lei Hua
+//' 
 //' @export
 // [[Rcpp::export]]
 double ema(NumericVector x, int n) {

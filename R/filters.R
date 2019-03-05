@@ -7,6 +7,8 @@
 #' @param x a vector of time series to be filtered
 #' @param h a vector of the thresholds
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 istar_CUSUM_R <- function(x, h)
 {

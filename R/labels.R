@@ -28,6 +28,8 @@
 #'         \item tLabel: ending time index of events, i.e., when the labels are created. Both t1Fea and tLabel will be useful for sequential bootstrap.
 #'         }
 #'
+#' @author Larry Lei Hua
+#'
 #' @export
 label_meta <- function(x, events, ptSl, ex_vert=T, n_ex=0)
 {

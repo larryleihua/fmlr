@@ -17,3 +17,6 @@ a numeric value
 \description{
 exponentially weighted moving average; only return the last value
 }
+\author{
+Larry Lei Hua
+}

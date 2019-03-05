@@ -30,3 +30,6 @@ b_t <- imbalance_tick(dat)
 cumsum(b_t)[cumsum(T_tib)] # check the accumulated b_t's where the imbalances occur
 
 }
+\author{
+Larry Lei Hua
+}

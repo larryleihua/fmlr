@@ -14,3 +14,6 @@ istar_CUSUM_R(x, h)
 \description{
 time index that triggers a symmetric CUSUM filter (R version for istar_CUSUM(), for shorter x, the R version can be faster than the C version)
 }
+\author{
+Larry Lei Hua
+}

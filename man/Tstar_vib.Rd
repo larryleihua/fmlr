@@ -30,3 +30,6 @@ b_tv_t <- imbalance_volume(dat)
 cumsum(b_tv_t)[cumsum(T_vib)] # check the accumulated b_t's where the imbalances occur
 
 }
+\author{
+Larry Lei Hua
+}

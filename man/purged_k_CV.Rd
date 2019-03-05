@@ -27,3 +27,6 @@ feaMat <- data.frame(Y = c(1,1,0,1,0),
 purged_k_CV(feaMat, k=2, gam=0.1)
 
 }
+\author{
+Larry Lei Hua
+}

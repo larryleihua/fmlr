@@ -20,3 +20,6 @@ calculate the weights for deriving fractionally differentiated series
 weights_fracDiff(0.5,tau=1e-3)
 
 }
+\author{
+Larry Lei Hua
+}

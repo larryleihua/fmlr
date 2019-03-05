@@ -34,3 +34,6 @@ x1 <- bar_tick_runs(dat)
 x2 <- bar_tick_runs(dat, filter=TRUE)
 
 }
+\author{
+Larry Lei Hua
+}

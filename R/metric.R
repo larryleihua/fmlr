@@ -15,6 +15,8 @@
 #' my_acc <- 0.45
 #' acc_lucky(train_class, test_class, my_acc)
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 acc_lucky <- function(train_class, test_class, my_acc, s=1000)
 {

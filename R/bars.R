@@ -9,6 +9,8 @@
 #' 
 #' @return tStamp, seconds since the starting time point, and H,L,O,C,V
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 bar_time <- function(dat, tDur=1)
 {
@@ -32,6 +34,8 @@ bar_time <- function(dat, tDur=1)
 #' @param nTic the number of ticks of each window
 #' 
 #' @return time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
+#' 
+#' @author Larry Lei Hua
 #' 
 #' @export 
 bar_tick <- function(dat, nTic)
@@ -63,6 +67,8 @@ bar_tick <- function(dat, nTic)
 #' 
 #' @return time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 bar_volume <- function(dat, vol)
 {
@@ -92,6 +98,8 @@ bar_volume <- function(dat, vol)
 #' @param unit the total dollar (unit) traded of each window
 #' 
 #' @return time stamp at the end of each bar (if timestamp is provided), and H,L,O,C,V
+#' 
+#' @author Larry Lei Hua
 #' 
 #' @export
 bar_unit <- function(dat, unit)
@@ -125,6 +133,8 @@ bar_unit <- function(dat, unit)
 #' 
 #' b_t <- imbalance_tick(dat)
 #' 
+#' @author Larry Lei Hua, ming08108(github)
+#' 
 #' @export
 imbalance_tick <- function(dat)
 {
@@ -150,6 +160,8 @@ imbalance_tick <- function(dat)
 #' T_tib <- Tstar_tib(dat)
 #' b_t <- imbalance_tick(dat)
 #' cumsum(b_t)[cumsum(T_tib)] # check the accumulated b_t's where the imbalances occur
+#' 
+#' @author Larry Lei Hua
 #' 
 #' @export
 Tstar_tib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
@@ -208,6 +220,8 @@ Tstar_tib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = rep(10,54))
 #' bar_tick_imbalance(dat)
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 bar_tick_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 {
@@ -246,6 +260,8 @@ bar_tick_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' 
 #' b_tv_t <- imbalance_volume(dat)
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 imbalance_volume <- function(dat)
 {
@@ -267,6 +283,8 @@ imbalance_volume <- function(dat)
 #' T_vib <- Tstar_vib(dat)
 #' b_tv_t <- imbalance_volume(dat)
 #' cumsum(b_tv_t)[cumsum(T_vib)] # check the accumulated b_t's where the imbalances occur
+#' 
+#' @author Larry Lei Hua
 #' 
 #' @export
 Tstar_vib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
@@ -324,6 +342,8 @@ Tstar_vib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = rep(10,54))
 #' bar_volume_imbalance(dat)
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 bar_volume_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 {
@@ -368,6 +388,8 @@ bar_volume_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' dat <- data.frame(Price = c(rep(0.5, 4), runif(1000)), Size = rep(10,1004))
 #' x1 <- bar_tick_runs(dat)
 #' x2 <- bar_tick_runs(dat, filter=TRUE)
+#' 
+#' @author Larry Lei Hua
 #' 
 #' @export
 bar_tick_runs <- function(dat, w0=10, de=1, bkw_T=5, bkw_Pb1=5, filter=FALSE)
@@ -422,6 +444,8 @@ bar_tick_runs <- function(dat, w0=10, de=1, bkw_T=5, bkw_Pb1=5, filter=FALSE)
 #' bar_volume_runs(dat)
 #' bar_volume_runs(dat, filter=TRUE)
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 bar_volume_runs <- function(dat, v_0=20, w0=10, de=1, bkw_T=5, bkw_Pb1=5, bkw_V=5, filter=FALSE)
 {
@@ -474,6 +498,8 @@ bar_volume_runs <- function(dat, v_0=20, w0=10, de=1, bkw_T=5, bkw_Pb1=5, bkw_V=
 #' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = floor(runif(54)*100))
 #' bar_unit_runs(dat, u_0=mean(dat$Price)*mean(dat$Size))
 #' bar_unit_runs(dat, u_0=mean(dat$Price)*mean(dat$Size), filter=TRUE)
+#' 
+#' @author Larry Lei Hua
 #' 
 #' @export
 bar_unit_runs <- function(dat, u_0=2000, w0=10, de=1, bkw_T=5, bkw_Pb1=5, bkw_U=5, filter=FALSE)

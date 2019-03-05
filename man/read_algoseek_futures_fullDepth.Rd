@@ -26,3 +26,6 @@ dat <- read_algoseek_futures_fullDepth(zipdata)
 # dat <- read_algoseek_futures_fullDepth("20160104.zip", whichData="ES/ESH6.csv")
 
 }
+\author{
+Larry Lei Hua
+}

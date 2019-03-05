@@ -20,3 +20,6 @@ dat <- data.frame(Price = c(rep(0.5, 4), runif(2), 0.5, 0.5, 0.4, runif(2) ))
 b_t <- imbalance_tick(dat)
 
 }
+\author{
+Larry Lei Hua, ming08108(github)
+}

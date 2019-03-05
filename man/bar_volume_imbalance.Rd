@@ -28,3 +28,6 @@ dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = rep(10,54))
 bar_volume_imbalance(dat)
 
 }
+\author{
+Larry Lei Hua
+}

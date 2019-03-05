@@ -20,3 +20,6 @@ dat <- data.frame(Price = c(rep(0.5, 4), runif(10)), Size = rep(10,14))
 b_tv_t <- imbalance_volume(dat)
 
 }
+\author{
+Larry Lei Hua
+}

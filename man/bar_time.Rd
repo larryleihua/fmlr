@@ -17,3 +17,6 @@ tStamp, seconds since the starting time point, and H,L,O,C,V
 \description{
 Construct time bars
 }
+\author{
+Larry Lei Hua
+}

@@ -33,6 +33,9 @@ using namespace Rcpp;
 //' # R_time <- end_time - start_time
 //' # cat("C and R time: ", C_time, R_time)
 //' # all(i_CUSUM-i_CUSUM_R==0)
+//' 
+//' @author Larry Lei Hua
+//' 
 //' @export
 // [[Rcpp::export]]
 IntegerVector istar_CUSUM(NumericVector x, NumericVector h){

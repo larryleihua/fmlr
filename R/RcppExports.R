@@ -7,6 +7,8 @@
 #' 
 #' @return a numeric value
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 ema <- function(x, n) {
     .Call(`_fmlr_ema`, x, n)
@@ -99,6 +101,9 @@ Tstar_vrb_cpp <- function(b_t, v_t, v_0, w0, de, bkw_T, bkw_Pb1, bkw_V) {
 #' # R_time <- end_time - start_time
 #' # cat("C and R time: ", C_time, R_time)
 #' # all(i_CUSUM-i_CUSUM_R==0)
+#' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 istar_CUSUM <- function(x, h) {
     .Call(`_fmlr_istar_CUSUM`, x, h)

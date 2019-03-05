@@ -16,6 +16,8 @@
 #'                      tLabel = c(4,12,16,23,38))
 #' purged_k_CV(feaMat, k=2, gam=0.1)
 #' 
+#' @author Larry Lei Hua
+#' 
 #' @export
 purged_k_CV <- function(feaMat,k=5,gam=0.01)
 {

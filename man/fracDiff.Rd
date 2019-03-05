@@ -19,3 +19,6 @@ then use tau and nWei is not used}
 \description{
 convert a time series into a fractionally differentiated series
 }
+\author{
+Larry Lei Hua
+}
