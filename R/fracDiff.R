@@ -57,7 +57,12 @@ fracDiff <- function(x, d=0.5, nWei=10, tau=NULL)
   weig <- weights_fracDiff(d=d, nWei=nWei, tau=tau)
   nWei <- length(weig) # the first one in x that can use all the weights
   nx <- length(x)
+  if(nWei > nx)
+  {
+    warning("Sample size is smaller than the number of weights, only use the weights up to the sample size.")
+    nWei <- nx
+  }
   rst <- rep(NA, nx)
-  rst[nWei:nx] <- sapply(nWei:nx, function(i){ sum(weig*x[i:(i-nWei+1)]) })
+  rst[nWei:nx] <- sapply(nWei:nx, function(i){ sum(weig[(1:nWei)] * x[i:(i-nWei+1)]) })
   return(rst)
 }
