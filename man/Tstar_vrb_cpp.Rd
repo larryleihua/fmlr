@@ -13,7 +13,7 @@ Tstar_vrb_cpp(b_t, v_t, v_0, w0, de, bkw_T, bkw_Pb1, bkw_V)
 
 \item{v_0}{average volume for each trade, and it is used to create the first bar}
 
-\item{w0}{the time window length of the first bar}
+\item{w0}{the expected time window length of the first bar}
 
 \item{de}{a positive value for adjusting the expected window size, that is, de*E0T; default: 1.}
 

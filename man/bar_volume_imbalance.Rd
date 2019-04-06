@@ -9,11 +9,11 @@ bar_volume_imbalance(dat, w0 = 10, bkw_T = 5, bkw_b = 5)
 \arguments{
 \item{dat}{dat input with at least the following column: Price, Size}
 
-\item{w0}{the time window length of the first bar}
+\item{w0}{the expected time window length of the first bar}
 
-\item{bkw_T}{backward window length when using pracma::movavg for exponentially weighted average T}
+\item{bkw_T}{backward window length when using exponentially weighted average T}
 
-\item{bkw_b}{backward window length when using pracma::movavg for exponentially weighted average b_tv_t}
+\item{bkw_b}{backward window length when using exponentially weighted average b_tv_t}
 }
 \value{
 a list of vectors for tStamp (if returned), and HLOCV of volume imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.

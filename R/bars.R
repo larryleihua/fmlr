@@ -147,16 +147,16 @@ imbalance_tick <- function(dat)
 
 #' Tstar index for Tick Imbalance Bars (bar_tib)
 #' @param dat dat input with at least the following columns: Price
-#' @param w0 the time window length of the first bar
-#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_b backward window length when using pracma::movavg for exponentially weighted average b_t
+#' @param w0 the expected time window length of the first bar
+#' @param bkw_T backward window length when using exponentially weighted average T
+#' @param bkw_b backward window length when using exponentially weighted average b_t
 #' 
-#' @return a vector for the lengths of the tick imbalance bars. For example, if the return is c(10,26), then the 2 tick imbalance bars are (0,10] and (10, 36]
+#' @return a vector for the lengths of the tick imbalance bars. For example, if the return is c(33,711), then the 2 tick imbalance bars are (0,33] and (33, 744]
 #' 
 #' @examples
 #' 
 #' set.seed(1)
-#' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)))
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(1000)))
 #' T_tib <- Tstar_tib(dat)
 #' b_t <- imbalance_tick(dat)
 #' cumsum(b_t)[cumsum(T_tib)] # check the accumulated b_t's where the imbalances occur
@@ -168,56 +168,48 @@ Tstar_tib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 {
   nx <- dim(dat)[1]
   b_t <- imbalance_tick(dat)
-  w0 <- max(min(which(cumsum(b_t) != 0)), w0) # fix the case when there are always 0 at the beginning
-  Tvec <- w0
-  E0T <- Tvec
-  repeat
+  E0T <- w0
+  b_t_Expected <- E0T*(0.5) # use 0.5 to simplify the logic for the first bar
+  b_t_psum <- abs(cumsum(b_t))
+  # if max(b_t_psum) < b_t_Expected, then there is no chance of tick imbalance
+  if(max(b_t_psum) < b_t_Expected){stop("Error: No bars can be created!")}else
   {
+    T_new <- min(which(b_t_psum >= b_t_Expected))
+  }
+  Tvec <- T_last <- T_new
+
+  while(T_last <= nx)
+  {
+    nTvec <- length(Tvec)
+    E0T <- ema(Tvec[1:nTvec], n=bkw_T)
     T_last <- sum(Tvec) # the previous T that has been calculated
-    nbt <- min(bkw_b, T_last - 1)
-    PminusP <- pracma::movavg(b_t[1:T_last], n=nbt, type="e")
-    PminusP <- utils::tail(PminusP,1) # the last one is what we need
+    PminusP <- ema(b_t[1:T_last], n=bkw_b)
     b_t_Expected <- E0T*abs(PminusP)
     b_t_psum <- abs(cumsum(b_t[-(1:T_last)]))
-    
-    # if max(b_t_psum) < b_t_Expected, then there is no chance of tick imbalance
     if(max(b_t_psum) < b_t_Expected){break}else
     {
       T_new <- min(which(b_t_psum >= b_t_Expected))
-      # cat(T_last, PminusP, T_new, "\n")
     }
     T_last <- T_last + T_new
-    if(T_last > nx){break}else
-    {
-      Tvec <- c(Tvec, T_new)
-      nTvec <- length(Tvec)
-      if(nTvec <= 2)
-      {
-        E0T <- mean(Tvec) # not enough T for exponential weighted average, so use the mean
-      }else
-      {
-        nT <- min(bkw_T, length(Tvec)-1)
-        E0T <- pracma::movavg(Tvec[1:nTvec], n=nT, type = "e")
-        E0T <- utils::tail(E0T,1)
-      }
-    }
+    Tvec <- c(Tvec, T_new)
   }
   return(Tvec)
 }
 
+
 #' Construct tick imbalance bars
 #' 
 #' @param dat dat input with at least the following column: Price, Size
-#' @param w0 the time window length of the first bar
-#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_b backward window length when using pracma::movavg for exponentially weighted average b_t
+#' @param w0 the expected time window length of the first bar
+#' @param bkw_T backward window length when using exponentially weighted average T
+#' @param bkw_b backward window length when using exponentially weighted average b_t
 #' 
 #' @return a list of vectors for tStamp (if returned), and HLOCV of tick imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
 #'
 #' @examples
 #' 
 #' set.seed(1)
-#' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = rep(10,54))
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(1000)), Size = rep(10,1004))
 #' bar_tick_imbalance(dat)
 #' 
 #' @author Larry Lei Hua
@@ -270,19 +262,19 @@ imbalance_volume <- function(dat)
 
 #' Tstar index for Volume Imbalance Bars (bar_vib)
 #' @param dat dat input with at least the following columns: Price, Size
-#' @param w0 the time window length of the first bar
-#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_b backward window length when using pracma::movavg for exponentially weighted average b_tv_t
+#' @param w0 the expected time window length of the first bar
+#' @param bkw_T backward window length when using exponentially weighted average T
+#' @param bkw_b backward window length when using exponentially weighted average b_tv_t
 #' 
 #' @return a vector for the lengths of the tick imbalance bars. For example, if the return is c(10,26), then the 2 tick imbalance bars are (0,10] and (10, 36]
 #' 
 #' @examples
 #' 
 #' set.seed(1)
-#' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = rep(10, 54))
+#' dat <- data.frame(Price = c(rep(0.5, 4), runif(50)), Size = rep(10,54))
 #' T_vib <- Tstar_vib(dat)
 #' b_tv_t <- imbalance_volume(dat)
-#' cumsum(b_tv_t)[cumsum(T_vib)] # check the accumulated b_t's where the imbalances occur
+#' cumsum(b_tv_t)[cumsum(T_vib)] # check the accumulated b_tv_t's where the imbalances occur
 #' 
 #' @author Larry Lei Hua
 #' 
@@ -290,39 +282,30 @@ imbalance_volume <- function(dat)
 Tstar_vib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 {
   nx <- dim(dat)[1]
-  b_tv_t <- imbalance_volume(dat) ## the main difference than imbalance_tick
-  w0 <- max(min(which(cumsum(b_tv_t) != 0)), w0) # fix the case when there are always 0 at the beginning
-  Tvec <- w0
-  E0T <- Tvec
-  repeat
+  b_tv_t <- imbalance_volume(dat)
+  E0T <- w0
+  b_tv_t_Expected <- E0T*(0.5) # use 0.5 to simplify the logic for the first bar
+  b_tv_t_psum <- abs(cumsum(b_tv_t))
+  if(max(b_tv_t_psum) < b_tv_t_Expected){stop("Error: No bars can be created!")}else
   {
+    T_new <- min(which(b_tv_t_psum >= b_tv_t_Expected))
+  }
+  Tvec <- T_last <- T_new
+  
+  while(T_last <= nx)
+  {
+    nTvec <- length(Tvec)
+    E0T <- ema(Tvec[1:nTvec], n=bkw_T)
     T_last <- sum(Tvec) # the previous T that has been calculated
-    nbt <- min(bkw_b, T_last - 1)
-    PminusP <- pracma::movavg(b_tv_t[1:T_last], n=nbt, type="e") # the main difference than tib
-    PminusP <- utils::tail(PminusP,1) # the last one is what we need
+    PminusP <- ema(b_tv_t[1:T_last], n=bkw_b)
     b_tv_t_Expected <- E0T*abs(PminusP)
     b_tv_t_psum <- abs(cumsum(b_tv_t[-(1:T_last)]))
-    
-    # if max(b_tv_t_psum) < b_tv_t_Expected, then there is no chance of volume imbalance
     if(max(b_tv_t_psum) < b_tv_t_Expected){break}else
     {
       T_new <- min(which(b_tv_t_psum >= b_tv_t_Expected))
     }
     T_last <- T_last + T_new
-    if(T_last > nx){break}else
-    {
-      Tvec <- c(Tvec, T_new)
-      nTvec <- length(Tvec)
-      if(nTvec <= 2)
-      {
-        E0T <- mean(Tvec) # not enough T for exponential weighted average, so use the mean
-      }else
-      {
-        nT <- min(bkw_T, length(Tvec)-1)
-        E0T <- pracma::movavg(Tvec[1:nTvec], n=nT, type = "e")
-        E0T <- utils::tail(E0T,1)
-      }
-    }
+    Tvec <- c(Tvec, T_new)
   }
   return(Tvec)
 }
@@ -330,9 +313,9 @@ Tstar_vib <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' Construct volume imbalance bars
 #' 
 #' @param dat dat input with at least the following column: Price, Size
-#' @param w0 the time window length of the first bar
-#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_b backward window length when using pracma::movavg for exponentially weighted average b_tv_t
+#' @param w0 the expected time window length of the first bar
+#' @param bkw_T backward window length when using exponentially weighted average T
+#' @param bkw_b backward window length when using exponentially weighted average b_tv_t
 #' 
 #' @return a list of vectors for tStamp (if returned), and HLOCV of volume imbalance bars. Note that the remaining data after the latest imbalance time point will be formed as a bar.
 #'
@@ -374,10 +357,10 @@ bar_volume_imbalance <- function(dat, w0=10, bkw_T=5, bkw_b=5)
 #' Construct tick runs bars
 #' 
 #' @param dat dat input with at least the following column: Price, Size
-#' @param w0 the time window length of the first bar
+#' @param w0 the expected time window length of the first bar
 #' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1
-#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
+#' @param bkw_T backward window length when using exponentially weighted average T
+#' @param bkw_Pb1 backward window length when using exponentially weighted average P[b_t=1]
 #' @param filter whether used as a filter; default FALSE. If TRUE, then only i_feabar, the ending time index of feature bars, is returned
 #' 
 #' @return If filter==FALSE, a list of vectors for tStamp (if returned), and HLOCV of tick runs bars. Note that the remaining data after the latest ending time point detected will be formed as a bar.  If filter==TRUE, i_feabar a vector of integers for the time index.
@@ -428,10 +411,10 @@ bar_tick_runs <- function(dat, w0=10, de=1, bkw_T=5, bkw_Pb1=5, filter=FALSE)
 #' 
 #' @param dat dat input with at least the following column: Price, Size
 #' @param v_0 average volume for each trade, and it is used to create the first bar
-#' @param w0 the time window length of the first bar
+#' @param w0 the expected time window length of the first bar
 #' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1
-#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
+#' @param bkw_T backward window length when using exponentially weighted average T
+#' @param bkw_Pb1 backward window length when using exponentially weighted average P[b_t=1]
 #' @param bkw_V backward window length for exponentially weighted average volumes
 #' @param filter whether used as a filter; default FALSE. If TRUE, then only i_feabar, the ending time index of feature bars, is returned
 #' 
@@ -483,10 +466,10 @@ bar_volume_runs <- function(dat, v_0=20, w0=10, de=1, bkw_T=5, bkw_Pb1=5, bkw_V=
 #' 
 #' @param dat dat input with at least the following column: Price, Size
 #' @param u_0 average unit (volume*price) for each trade, and it is used to create the first bar
-#' @param w0 the time window length of the first bar
+#' @param w0 the expected time window length of the first bar
 #' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1
-#' @param bkw_T backward window length when using pracma::movavg for exponentially weighted average T
-#' @param bkw_Pb1 backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]
+#' @param bkw_T backward window length when using exponentially weighted average T
+#' @param bkw_Pb1 backward window length when using exponentially weighted average P[b_t=1]
 #' @param bkw_U backward window length for exponentially weighted average volumes
 #' @param filter whether used as a filter; default FALSE. If TRUE, then only i_feabar, the ending time index of feature bars, is returned
 #' 

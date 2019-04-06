@@ -16,7 +16,7 @@ ema <- function(x, n) {
 
 #' Tstar index for Tick Runs Bars (bar_trb)
 #' @param b_t output of imbalance_tick(dat) with the dat has at least the following columns: Price
-#' @param w0 the time window length of the first bar
+#' @param w0 the expected time window length of the first bar
 #' @param de a positive value for adjusting the expected window size, that is, de*E0
 #' @param bkw_T backward window length for exponentially weighted average T
 #' @param bkw_Pb1 backward window length for exponentially weighted average P[b_t=1]
@@ -45,7 +45,7 @@ Tstar_trb_cpp <- function(b_t, w0, de, bkw_T, bkw_Pb1) {
 #' @param b_t output of imbalance_tick(dat) with the data 'dat' has at least the following columns: Price
 #' @param v_t volume of the same data
 #' @param v_0 average volume for each trade, and it is used to create the first bar
-#' @param w0 the time window length of the first bar
+#' @param w0 the expected time window length of the first bar
 #' @param de a positive value for adjusting the expected window size, that is, de*E0T; default: 1.
 #' @param bkw_T backward window length for exponentially weighted average T
 #' @param bkw_Pb1 backward window length for exponentially weighted average P[b_t=1]

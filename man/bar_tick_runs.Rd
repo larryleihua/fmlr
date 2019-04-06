@@ -10,13 +10,13 @@ bar_tick_runs(dat, w0 = 10, de = 1, bkw_T = 5, bkw_Pb1 = 5,
 \arguments{
 \item{dat}{dat input with at least the following column: Price, Size}
 
-\item{w0}{the time window length of the first bar}
+\item{w0}{the expected time window length of the first bar}
 
 \item{de}{a positive value for adjusting the expected window size, that is, de*E0T; default: 1}
 
-\item{bkw_T}{backward window length when using pracma::movavg for exponentially weighted average T}
+\item{bkw_T}{backward window length when using exponentially weighted average T}
 
-\item{bkw_Pb1}{backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]}
+\item{bkw_Pb1}{backward window length when using exponentially weighted average P[b_t=1]}
 
 \item{filter}{whether used as a filter; default FALSE. If TRUE, then only i_feabar, the ending time index of feature bars, is returned}
 }

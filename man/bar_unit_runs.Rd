@@ -12,13 +12,13 @@ bar_unit_runs(dat, u_0 = 2000, w0 = 10, de = 1, bkw_T = 5,
 
 \item{u_0}{average unit (volume*price) for each trade, and it is used to create the first bar}
 
-\item{w0}{the time window length of the first bar}
+\item{w0}{the expected time window length of the first bar}
 
 \item{de}{a positive value for adjusting the expected window size, that is, de*E0T; default: 1}
 
-\item{bkw_T}{backward window length when using pracma::movavg for exponentially weighted average T}
+\item{bkw_T}{backward window length when using exponentially weighted average T}
 
-\item{bkw_Pb1}{backward window length when using pracma::movavg for exponentially weighted average P[b_t=1]}
+\item{bkw_Pb1}{backward window length when using exponentially weighted average P[b_t=1]}
 
 \item{bkw_U}{backward window length for exponentially weighted average volumes}
 

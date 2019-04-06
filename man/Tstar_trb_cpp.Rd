@@ -9,7 +9,7 @@ Tstar_trb_cpp(b_t, w0, de, bkw_T, bkw_Pb1)
 \arguments{
 \item{b_t}{output of imbalance_tick(dat) with the dat has at least the following columns: Price}
 
-\item{w0}{the time window length of the first bar}
+\item{w0}{the expected time window length of the first bar}
 
 \item{de}{a positive value for adjusting the expected window size, that is, de*E0}
 
