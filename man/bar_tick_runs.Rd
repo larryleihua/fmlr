@@ -4,8 +4,7 @@
 \alias{bar_tick_runs}
 \title{Construct tick runs bars}
 \usage{
-bar_tick_runs(dat, w0 = 10, de = 1, bkw_T = 5, bkw_Pb1 = 5,
-  filter = FALSE)
+bar_tick_runs(dat, w0 = 10, de = 1, bkw_T = 5, bkw_Pb1 = 5, filter = FALSE)
 }
 \arguments{
 \item{dat}{dat input with at least the following column: Price, Size}

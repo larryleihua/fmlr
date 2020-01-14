@@ -4,8 +4,16 @@
 \alias{bar_unit_runs}
 \title{Construct unit runs bars}
 \usage{
-bar_unit_runs(dat, u_0 = 2000, w0 = 10, de = 1, bkw_T = 5,
-  bkw_Pb1 = 5, bkw_U = 5, filter = FALSE)
+bar_unit_runs(
+  dat,
+  u_0 = 2000,
+  w0 = 10,
+  de = 1,
+  bkw_T = 5,
+  bkw_Pb1 = 5,
+  bkw_U = 5,
+  filter = FALSE
+)
 }
 \arguments{
 \item{dat}{dat input with at least the following column: Price, Size}

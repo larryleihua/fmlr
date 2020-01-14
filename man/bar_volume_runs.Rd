@@ -4,8 +4,16 @@
 \alias{bar_volume_runs}
 \title{Construct volume runs bars}
 \usage{
-bar_volume_runs(dat, v_0 = 20, w0 = 10, de = 1, bkw_T = 5,
-  bkw_Pb1 = 5, bkw_V = 5, filter = FALSE)
+bar_volume_runs(
+  dat,
+  v_0 = 20,
+  w0 = 10,
+  de = 1,
+  bkw_T = 5,
+  bkw_Pb1 = 5,
+  bkw_V = 5,
+  filter = FALSE
+)
 }
 \arguments{
 \item{dat}{dat input with at least the following column: Price, Size}
