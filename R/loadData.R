@@ -1,6 +1,6 @@
-#--------------------#
-# LarryHua.com, 2019 #
-#--------------------#
+#-------------------------#
+# Larry Lei Hua 2019-2020 #
+#-------------------------#
 
 # Internal function used to process data loaded by read_algoseek_futures_fullDepth()
 read_algoseek_futures_fullDepth_ <- function(data)
@@ -132,3 +132,132 @@ read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
 }
 
 
+# Internal function used to process data loaded by read_algoseek_equity_taq()
+read_algoseek_equity_taq_ <- function(data)
+{
+  data$h <- lubridate::hour(data$Timestamp)
+  data$m <- lubridate::minute(data$Timestamp)
+  data$s <- lubridate::second(data$Timestamp)
+  data$ms <- data$s%%1
+  data$s <- data$s - data$ms
+  data
+}
+
+
+#' Load AlgoSeek Equity TAQ data from zip files
+#' 
+#' @param zipdata the original zip data provided by AlgoSeek
+#' @param whichData the specific data to be loaded; by default load all data in the zip file
+#' 
+#' @examples
+#' \donttest{
+#' zipdata <- tempfile()
+#' download.file("https://www.algoseek.com/static/files/sample_data/equity_and_etf_etn/IBM.TradesQuotes.012815.zip",zipdata)
+#' dat <- read_algoseek_equity_taq(zipdata)
+#' }
+#
+#' # Do not run unless the file 20180108.zip is avaliable
+#' # dat <- read_algoseek_equity_taq("20180108.zip", whichData="AMZN.csv")
+#' 
+#' @author Larry Lei Hua
+#' 
+#' @export
+read_algoseek_equity_taq <- function(zipdata, whichData=NULL)
+{
+  col_types <- readr::cols(
+    Timestamp = readr::col_time(format="%H:%M:%OS"),
+    EventType = readr::col_character(),
+    Ticker = readr::col_character(),
+    Quantity = readr::col_integer(),
+    Exchange = readr::col_character(),
+    Conditions = readr::col_character()
+  )
+  
+  if(is.null(whichData))
+  {
+    file_names <- utils::unzip(zipdata, list = TRUE)
+    data_file_names <- subset(file_names, file_names$Length>0)
+    output_file_names <- gsub("/", "_", data_file_names$Name)
+    alldata <- lapply(data_file_names$Name, function(file){
+      rawdata <- readr::read_csv(unz(zipdata, file), col_types=col_types)
+      read_algoseek_equity_taq_(rawdata)
+    })
+    names(alldata) <- output_file_names
+  }else
+  {
+    output_file_names <- gsub("/", "_", whichData)
+    alldata <- lapply(whichData, function(file){
+      rawdata <- readr::read_csv(unz(zipdata, file), col_types=col_types)
+      read_algoseek_equity_taq_(rawdata)
+    })
+    names(alldata) <- output_file_names
+  }
+  alldata
+}
+
+
+# Internal function used to process data loaded by read_algoseek_equity_fullDepth()
+read_algoseek_equity_fullDepth_ <- function(data)
+{
+  data$h <- lubridate::hour(data$Timestamp)
+  data$m <- lubridate::minute(data$Timestamp)
+  data$s <- lubridate::second(data$Timestamp)
+  data$ms <- data$s %% 1
+  data$s <- data$s - data$ms
+  data
+}
+
+#' Load AlgoSeek equity Full Depth data from zip files
+#' 
+#' @param zipdata the original zip data provided by AlgoSeek
+#' @param whichData the specific data to be loaded; by default load all data in the zip file
+#' 
+#' 
+#' @examples
+#' \donttest{
+#' zipdata <- tempfile()
+#' download.file("https://www.algoseek.com/static/files/sample_data/equity_and_etf_etn/IBM.FullDepth.20140128.csv.zip",zipdata)
+#' dat <- read_algoseek_equity_fullDepth(zipdata)
+#' }
+#'
+#' # Do not run unless the file 20180108.zip is avaliable
+#' # dat <- read_algoseek_equity_fullDepth("20180108.zip", whichData="AMZN.csv")
+#' 
+#' @author Larry Lei Hua
+#' 
+#' @export
+read_algoseek_equity_fullDepth <- function(zipdata, whichData=NULL)
+{
+  col_types <- readr::cols(
+    Date = readr::col_number(),
+    Timestamp = readr::col_time(format="%H:%M:%OS"),
+    OrderNumber = readr::col_number(),
+    EventType = readr::col_character(),
+    Ticker = readr::col_character(),
+    Price = readr::col_number(),
+    Quantity = readr::col_integer(),
+    MPID = readr::col_character(),
+    Exchange = readr::col_character()
+  )
+  
+  if(is.null(whichData))
+  {
+    file_names <- utils::unzip(zipdata, list = TRUE)
+    data_file_names <- subset(file_names, file_names$Length>0)
+    output_file_names <- gsub("/", "_", data_file_names$Name)
+    alldata <- lapply(data_file_names$Name, function(file){
+      rawdata <- readr::read_csv(unz(zipdata, file), col_types=col_types)
+      read_algoseek_equity_fullDepth_(rawdata)
+    })
+    names(alldata) <- output_file_names
+  }else
+  {
+    output_file_names <- gsub("/", "_", whichData)
+    alldata <- lapply(whichData, function(file){
+      rawdata <- readr::read_csv(unz(zipdata, file), col_types=col_types)
+      read_algoseek_equity_fullDepth_(rawdata)
+    })
+    names(alldata) <- output_file_names
+  }
+  alldata
+}
