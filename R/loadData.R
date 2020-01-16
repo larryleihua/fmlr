@@ -165,6 +165,7 @@ read_algoseek_equity_taq_ <- function(data)
 read_algoseek_equity_taq <- function(zipdata, whichData=NULL)
 {
   col_types <- readr::cols(
+    Date = readr::col_date(format="%Y%m%d"),
     Timestamp = readr::col_time(format="%H:%M:%OS"),
     EventType = readr::col_character(),
     Ticker = readr::col_character(),
