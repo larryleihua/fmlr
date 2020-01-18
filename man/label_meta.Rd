@@ -4,7 +4,7 @@
 \alias{label_meta}
 \title{Meta labeling, including three options: triple barriers, upper and vertical barriers, and lower and vertical barriers.}
 \usage{
-label_meta(x, events, ptSl, ex_vert = T, n_ex = 0)
+label_meta(x, events, ptSl, n_ex = 0)
 }
 \arguments{
 \item{x}{a vector of prices series to be labeled.}
@@ -18,8 +18,6 @@ label_meta(x, events, ptSl, ex_vert = T, n_ex = 0)
         }}
 
 \item{ptSl}{a vector of two multipliers for the upper and lower barriers, respectively.}
-
-\item{ex_vert}{whether exclude the output when the vertical barrier is hit; default is T.}
 
 \item{n_ex}{number of excluded observations at the begining of x; default is 0.}
 }
