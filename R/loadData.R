@@ -131,7 +131,6 @@ read_algoseek_futures_fullDepth <- function(zipdata, whichData=NULL)
   alldata
 }
 
-
 # Internal function used to process data loaded by read_algoseek_equity_taq()
 read_algoseek_equity_taq_ <- function(data)
 {
@@ -140,6 +139,11 @@ read_algoseek_equity_taq_ <- function(data)
   data$s <- lubridate::second(data$Timestamp)
   data$ms <- data$s%%1
   data$s <- data$s - data$ms
+
+
+  # covert conditions to readable codes
+  # R.utils::intToBin(strtoi(c('A0','00','20','20'), base = 16L))
+
   data
 }
 
@@ -262,3 +266,112 @@ read_algoseek_equity_fullDepth <- function(zipdata, whichData=NULL)
   }
   alldata
 }
+
+#' Obtain readable condition codes for AlgoSeek equity TAQ
+#' 
+#' @param con raw condition codes such as "a0000020" provided with Algoseek data
+#' @return a vector of integers for the condition codes defined by algoseek
+#' 
+#' @examples
+#' condition_algoseek_equity_taq("a0000020")
+#' 
+#' @author Larry Lei Hua
+#' 
+#' @export
+condition_algoseek_equity_taq <- function(con)
+{
+  tmp <- strsplit(con, "")[[1]]
+  tmp <- paste0(tmp[c(TRUE, FALSE)], tmp[c(FALSE, TRUE)])
+  codes <- rev((31:0)[unlist(binaryLogic::as.binary(strtoi(tmp, base = 16L), n=8))])
+  codes
+}
+
+
+#' Map conditions to conditions codes for AlgoSeek equity TAQ
+#' 
+#' @param codes a vector of integers for readable condition codes
+#' @param tq a string to indicate "trade" or "quote"; default is "trade"
+#' @return a vector of meanings of the condition codes defined by algoseek
+#' 
+#' @examples
+#' condition_maps_algoseek_equity_taq(c(0, 9), tq="trade")
+#' condition_maps_algoseek_equity_taq(c(0, 9), tq="quote")
+#' 
+#' @author Larry Lei Hua
+#' 
+#' @export
+condition_maps_algoseek_equity_taq <- function(codes, tq="trade")
+{
+  cond_trade <- c("tRegular", 
+                  "tCash",
+                  "tNextDay",
+                  "tSeller",
+                  "tYellowFlag",
+                  "tIntermarketSweep",
+                  "tOpeningPrints",
+                  "tClosingPrints",
+                  "tReOpeningPrints",
+                  "tDerivativelyPriced",
+                  "tFormT",
+                  "tSold",
+                  "tStopped",
+                  "tExtendedHours",
+                  "tOutOfSequence",
+                  "tSplit",
+                  "tAcquisition",
+                  "tBunched",
+                  "tStockOption",
+                  "tDistribution",
+                  "tAveragePrice",
+                  "tCross",
+                  "tPriceVariation",
+                  "tRule155",
+                  "tOfficialClose",
+                  "tPriorReferencePrice",
+                  "tOfficialOpen",
+                  "tCapElection",
+                  "tAutoExecution",
+                  "tTradeThroughExempt",
+                  "",
+                  "tOddLot")
+  
+  cond_quote <- c("qRegular",
+                  "qSlow",
+                  "qGap",
+                  "qClosing",
+                  "qNewsDissemination",
+                  "qNewsPending",
+                  "qTradingRangeIndication",
+                  "qOrderImbalance",
+                  "qClosedMarketMaker",
+                  "qVolatilityTradingPause",
+                  "qNonFirmQuote",
+                  "qOpeningQuote",
+                  "qDueToRelatedSecurity",
+                  "qResume",
+                  "qInViewOfCommon",
+                  "qEquipmentChangeover",
+                  "qSubPennyTrading",
+                  "qNoOpenNoResume",
+                  "qLimitUpLimitDownPriceBand",
+                  "qRepublishedLimitUpLimitDownPriceBand",
+                  "qManual",
+                  "qFastTrading",
+                  "qOrderInflux")
+  if(tq=="trade")
+  {
+    out <- cond_trade[codes+1]
+  }else
+  {
+    out <- cond_quote[codes+1]
+  }
+  out
+}
+
+
+
+
+
+
+
+
